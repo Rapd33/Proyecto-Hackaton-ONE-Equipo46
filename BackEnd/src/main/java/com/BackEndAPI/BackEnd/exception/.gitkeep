@@ -1,0 +1,4 @@
+# Exception Handling
+# Manejo centralizado de excepciones con @ControllerAdvice
+# Excepciones personalizadas y handlers globales para respuestas de error consistentes
+# Ejemplo: GlobalExceptionHandler, PythonApiException

@@ -1,0 +1,4 @@
+# Entities / Domain Models
+# Entidades JPA que representan las tablas de la base de datos
+# Anotadas con @Entity, @Table, @Id, etc.
+# (Preparado para futuras implementaciones de persistencia)

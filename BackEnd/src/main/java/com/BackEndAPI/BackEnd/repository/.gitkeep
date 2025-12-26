@@ -1,0 +1,4 @@
+# Repositories / Data Access Layer
+# Capa de acceso a datos usando Spring Data JPA
+# Interfaces que extienden JpaRepository para operaciones CRUD con la base de datos
+# (Preparado para futuras implementaciones de persistencia)
