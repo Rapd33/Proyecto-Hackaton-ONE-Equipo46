@@ -9,14 +9,24 @@ import { CustomerService } from '../../services/customer.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="container">
-      <h2>Validar Cliente</h2>
-      <input type="text" [(ngModel)]="customerId" placeholder="Ingrese ID del cliente" />
-      <button (click)="validate()" [disabled]="!customerId">Consultar</button>
-      <p *ngIf="error" class="error">{{ error }}</p>
+    <div class="card-container">
+      <h2>🔍 Validar Cliente</h2>
+      <p>Ingrese el ID para verificar si ya existe en nuestra base de datos.</p>
+      
+      <input 
+        type="text" 
+        [(ngModel)]="customerId" 
+        placeholder="Ej: 123" 
+        (keyup.enter)="validate()" 
+      />
+      
+      <button (click)="validate()" [disabled]="!customerId">
+        Consultar
+      </button>
+
+      <p *ngIf="error" class="error-msg">{{ error }}</p>
     </div>
-  `,
-  styles: [`.container { max-width: 400px; margin: 50px auto; text-align: center; }`]
+  `
 })
 export class ValidationComponent {
   customerId = '';
@@ -24,6 +34,7 @@ export class ValidationComponent {
   private router = inject(Router);
   private customerService = inject(CustomerService);
 
+  // Chicos: Esta función decide a dónde vamos según si existe o no el cliente
   validate() {
     this.customerService.checkCustomerExists(this.customerId).subscribe({
       next: (exists) => {
@@ -33,7 +44,7 @@ export class ValidationComponent {
           this.router.navigate(['/register', this.customerId]);
         }
       },
-      error: () => this.error = 'Error de conexión con el servidor.'
+      error: () => this.error = '⚠️ Error conectando con el servidor (¿Está prendido el Java?)'
     });
   }
 }
