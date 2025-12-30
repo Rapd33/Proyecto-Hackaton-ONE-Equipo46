@@ -1,15 +1,13 @@
 export interface Customer {
-  id: string; // Cédula o ID único
+  id: string;
   name: string;
   email: string;
-  contractType: 'MONTHLY' | 'ANNUAL' | 'BIANNUAL';
-  lastPaymentDate?: string;
-  totalSpend?: number;
+  contractType: 'MONTHLY' | 'ANNUAL';
 }
 
 export interface ChurnPrediction {
   customerId: string;
-  prediction: string; // "Va a cancelar" / "Se queda"
-  probability: number; // 0.85
-  riskLevel: 'LOW' | 'MEDIUM' | 'HIGH';
+  prediction: string;     // Ej: "Va a cancelar"
+  probability: number;    // Ej: 0.78
+  riskLevel: 'HIGH' | 'MEDIUM' | 'LOW';
 }
