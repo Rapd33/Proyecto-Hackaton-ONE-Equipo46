@@ -1,0 +1,4 @@
+# Utilities / Helpers
+# Clases de utilidad, constantes, helpers y métodos compartidos
+# No contienen lógica de negocio, solo funciones reutilizables
+# Ejemplo: Constants (URLs, thresholds de probabilidad, mensajes)
