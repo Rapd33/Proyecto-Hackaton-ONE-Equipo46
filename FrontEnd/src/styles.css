@@ -1,1 +1,82 @@
-/* You can add global styles to this file, and also import other style files */
+/* ==========================================================
+   SRC/STYLES.CSS - VARIABLES Y ESTILOS GLOBALES
+   ========================================================== */
+
+:root {
+  /* PALETA "EXECUTIVE GOLD" (Basada en tu Logo) */
+  --primary-dark:   #1A2238; /* Navy Profundo (Fondos) */
+  --primary-light:  #2496BE; /* Cian/Azul Océano (Detalles) */
+  
+  --accent-color:   #C59D5F; /* Dorado (Botones Principales) */
+  --accent-dark:    #A67C45; /* Dorado Oscuro (Hover) */
+
+  --text-main:      #1A2238; 
+  --text-light:     #F5F5F5;
+  
+  --soft-bg:        #F4F4F4; 
+  --card-bg:        #FFFFFF;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--soft-bg);
+  color: var(--text-main);
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4 { color: var(--primary-dark); }
+
+/* ==========================================================
+   MASTER BUTTON STYLES (La "Física" de tus botones)
+   ========================================================== */
+button {
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: bold;
+  border: none;
+  outline: none;
+  
+  /* ANIMACIÓN SUAVE (La magia está aquí) */
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  
+  /* Sombra base sutil */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  
+  /* Evita que el texto se seleccione al hacer clic rápido */
+  user-select: none;
+}
+
+/* EFECTO HOVER (Al pasar el mouse) - Para TODOS los botones */
+button:hover {
+  /* Se levanta un poco (-3px) y crece ligeramente (scale 1.02) */
+  transform: translateY(-3px) scale(1.02);
+  
+  /* La sombra crece para dar sensación de altura */
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  
+  /* Brillo extra */
+  filter: brightness(1.1);
+}
+
+/* EFECTO ACTIVE (Al hacer clic) */
+button:active {
+  transform: translateY(1px) scale(0.98); /* Se hunde un poco */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* CLASES DE UTILIDAD PARA COLORES */
+.btn-gold {
+  background: linear-gradient(135deg, var(--accent-color), var(--accent-dark));
+  color: white;
+}
+
+.btn-navy {
+  background: var(--primary-dark);
+  color: white;
+}
+
+.btn-cyan {
+  background: var(--primary-light);
+  color: white;
+}
