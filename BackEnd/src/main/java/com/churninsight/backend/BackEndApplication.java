@@ -1,4 +1,4 @@
-package com.BackEndAPI.BackEnd;
+package com.churninsight.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

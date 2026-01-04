@@ -22,6 +22,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    // >>> Cliente HTTP reactivo <<<
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
     // 2. SQLite (Driver + Dialectos Comunitarios CORRECTOS)
     implementation 'org.xerial:sqlite-jdbc:3.47.1.0'
     // CORRECCIÓN: Usamos el grupo oficial 'org.hibernate.orm'
@@ -34,6 +37,7 @@ dependencies {
     // 4. Herramientas
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test' // Para testear WebClient
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
