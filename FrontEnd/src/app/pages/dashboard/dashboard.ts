@@ -2,14 +2,8 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-/**
- * ⚠️ NOTA DE MANTENIMIENTO:
- * Importamos el servicio desde '../../services/customer' (sin .service)
- * porque el archivo físico se creó como 'customer.ts'.
- * Si en el futuro renombras el archivo a 'customer.service.ts', actualiza esta ruta.
- */
 import { CustomerService } from '../../services/customer';
-import { Customer, ChurnPrediction } from '../../models/customer.model';
+import { Customer } from '../../models/customer.model';
 
 // --- Importación de Componentes Hijos (Piezas de la interfaz) ---
 import { NavbarComponent } from '../../components/navbar/navbar';
@@ -21,169 +15,264 @@ import { ClienteNuevoFormComponent } from '../../components/dashboard/cliente-nu
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  // Aquí declaramos todas las dependencias que usa este HTML
   imports: [
-    CommonModule,             // Para directivas como *ngIf
-    FormsModule,              // Para vincular inputs con [(ngModel)]
-    NavbarComponent, 
+    CommonModule,
+    FormsModule,
+    NavbarComponent,
     FooterComponent,
-    DashboardGeneralComponent, 
-    DashboardClienteComponent, 
+    DashboardGeneralComponent,
+    DashboardClienteComponent,
     ClienteNuevoFormComponent
   ],
   template: `
     <app-navbar></app-navbar>
 
     <div class="container">
-      
-      <div class="search-bar">
-        <input 
-          type="text" 
-          [(ngModel)]="searchId" 
-          placeholder="🔍 Buscar ID Cliente..." 
-          (keyup.enter)="search()" 
-        />
-        
-        <button class="search-btn" (click)="search()">Buscar</button>
-        
-        <button class="new-btn" (click)="openModal()">+ Nuevo</button>
+
+      <div class="search-section">
+        <h2>Búsqueda de Clientes</h2>
+
+        <div class="search-options">
+          <label>
+            <input type="radio" [(ngModel)]="searchType" value="customerId" name="searchType" />
+            Por ID de Cliente
+          </label>
+          <label>
+            <input type="radio" [(ngModel)]="searchType" value="email" name="searchType" />
+            Por Correo Electrónico
+          </label>
+          <label>
+            <input type="radio" [(ngModel)]="searchType" value="document" name="searchType" />
+            Por Documento
+          </label>
+        </div>
+
+        <div class="search-bar">
+          <input
+            type="text"
+            [(ngModel)]="searchValue"
+            [placeholder]="getPlaceholder()"
+            (keyup.enter)="search()"
+          />
+          <button class="search-btn" (click)="search()">Buscar</button>
+          <button class="info-btn" (click)="openModal()">ℹ️ Info</button>
+        </div>
+
+        <div class="error-message" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
       </div>
 
       <app-dashboard-general></app-dashboard-general>
 
-      <app-dashboard-cliente 
-        [customer]="customer" 
-        [prediction]="prediction">
-      </app-dashboard-cliente>
+      <app-dashboard-cliente [customer]="customer"></app-dashboard-cliente>
     </div>
 
     <app-footer></app-footer>
 
-    <app-cliente-nuevo-form 
-      *ngIf="showModal" 
-      [initialId]="searchId" 
+    <app-cliente-nuevo-form
+      *ngIf="showModal"
       (close)="onModalClose($event)">
     </app-cliente-nuevo-form>
   `,
   styles: [`
-    /* ESTILOS DEL DASHBOARD
-       Usamos variables CSS (var(--...)) definidas en 'src/styles.css'.
-       Esto asegura que la paleta "Executive Gold" se aplique uniformemente.
-    */
-
-    .container { 
-      max-width: 900px; 
-      margin: 30px auto; 
-      padding: 0 20px; 
-      min-height: 80vh; /* Empuja el footer hacia abajo si hay poco contenido */
-    }
-    
-    .search-bar { 
-      display: flex; 
-      gap: 10px; 
-      margin-bottom: 30px; 
-    }
-    
-    input { 
-      flex: 1; /* Toma todo el espacio disponible */
-      padding: 12px; 
-      border: 1px solid #ddd; 
-      border-radius: 8px; 
-      font-size: 1rem; 
-      color: var(--text-main); /* Azul oscuro para texto */
-    }
-    
-    /* Efecto de foco usando el color Cian del tema */
-    input:focus { 
-      outline: 2px solid var(--primary-light); 
-      border-color: transparent; 
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 20px;
+      min-height: 80vh;
     }
 
-    button { 
-      padding: 0 25px; 
-      border: none; 
-      border-radius: 8px; 
-      color: white; 
-      font-weight: bold; 
-      cursor: pointer; 
-      transition: background 0.3s; /* Suaviza el cambio de color al pasar el mouse */
+    .search-section {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      margin-bottom: 30px;
     }
 
-    /* ESTILO BOTÓN BUSCAR: Azul Cian (--primary-light) */
-    .search-btn { 
-      background: var(--primary-light); 
-    }
-    .search-btn:hover { 
-      background: var(--primary-dark); /* Se oscurece al hover */
+    h2 {
+      margin: 0 0 20px 0;
+      color: #2c3e50;
+      font-size: 1.5rem;
     }
 
-    /* ESTILO BOTÓN NUEVO: Dorado (--accent-color) */
-    .new-btn { 
-      background: var(--accent-color); 
-      color: #fff; 
-      /* Sombra de texto sutil para mejorar lectura sobre fondo dorado */
-      text-shadow: 0 1px 2px rgba(0,0,0,0.1); 
+    .search-options {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
     }
-    .new-btn:hover { 
-      background: var(--accent-dark); /* Dorado bronce al hover */
+
+    .search-options label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      color: #34495e;
+      font-size: 0.95rem;
+    }
+
+    .search-options input[type="radio"] {
+      cursor: pointer;
+      width: auto;
+      margin: 0;
+    }
+
+    .search-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      color: #2c3e50;
+    }
+
+    input[type="text"]:focus {
+      outline: 2px solid #3498db;
+      border-color: transparent;
+    }
+
+    button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .search-btn {
+      background: #3498db;
+    }
+    .search-btn:hover {
+      background: #2980b9;
+    }
+
+    .info-btn {
+      background: #95a5a6;
+    }
+    .info-btn:hover {
+      background: #7f8c8d;
+    }
+
+    .error-message {
+      background: #ffe5e5;
+      color: #c0392b;
+      padding: 12px;
+      border-radius: 6px;
+      border-left: 4px solid #e74c3c;
+      font-size: 0.9rem;
     }
   `]
 })
 export class Dashboard {
   // --- Variables de Estado ---
-  searchId = '';          // Almacena el texto del buscador
-  showModal = false;      // Controla la visibilidad del formulario flotante
-  
-  // Modelos de datos (pueden ser undefined al inicio)
+  searchType: 'customerId' | 'email' | 'document' = 'email';
+  searchValue = '';
+  showModal = false;
+  errorMessage = '';
+
+  // Modelo de datos
   customer?: Customer;
-  prediction?: ChurnPrediction;
-  
-  // Inyección del servicio (Nueva sintaxis Angular 16+)
+
+  // Inyección del servicio
   private service = inject(CustomerService);
 
-  /**
-   * Lógica principal de búsqueda de clientes.
-   * 1. Valida que el input no esté vacío.
-   * 2. Consulta al servicio si el ID existe.
-   * 3. SI EXISTE: Descarga datos del cliente y predicción.
-   * 4. NO EXISTE: Sugiere al usuario abrir el modal de registro.
-   */
-  search() {
-    if(!this.searchId) return; // Protección contra búsquedas vacías
+  getPlaceholder(): string {
+    switch (this.searchType) {
+      case 'customerId':
+        return '🔍 Ej: 7590-VHVEG';
+      case 'email':
+        return '🔍 Ej: ralvarez4776@outlook.com';
+      case 'document':
+        return '🔍 Ej: 16706640';
+      default:
+        return '🔍 Buscar...';
+    }
+  }
 
-    this.service.checkCustomerExists(this.searchId).subscribe(exists => {
-      if(exists) {
-        console.log(`[Dashboard] Cliente ${this.searchId} encontrado.`);
-        // Carga paralela de datos y predicción
-        this.service.getCustomer(this.searchId).subscribe(c => this.customer = c);
-        this.service.getChurnPrediction(this.searchId).subscribe(p => this.prediction = p);
-      } else {
-        // UX: Confirmación antes de interrumpir al usuario con un modal
-        if(confirm(`El ID ${this.searchId} no existe. ¿Desea registrarlo?`)) {
-          this.showModal = true;
-        }
+  search() {
+    this.errorMessage = '';
+    this.customer = undefined;
+
+    if (!this.searchValue.trim()) {
+      this.errorMessage = 'Por favor ingresa un valor para buscar';
+      return;
+    }
+
+    console.log(`[Dashboard] Buscando por ${this.searchType}: ${this.searchValue}`);
+
+    switch (this.searchType) {
+      case 'customerId':
+        this.searchByCustomerId();
+        break;
+      case 'email':
+        this.searchByEmail();
+        break;
+      case 'document':
+        this.searchByDocument();
+        break;
+    }
+  }
+
+  private searchByCustomerId() {
+    this.service.getCustomer(this.searchValue).subscribe({
+      next: (customer) => {
+        this.customer = customer;
+        console.log('[Dashboard] Cliente encontrado:', customer);
+      },
+      error: (error) => {
+        console.error('[Dashboard] Error al buscar:', error);
+        this.errorMessage = `No se encontró ningún cliente con ID: ${this.searchValue}`;
       }
     });
   }
 
-  /**
-   * Abre el modal de registro manualmente.
-   * Vinculado al botón "+ Nuevo".
-   */
-  openModal() { 
-    this.showModal = true; 
+  private searchByEmail() {
+    this.service.getCustomerByEmail(this.searchValue).subscribe({
+      next: (customer) => {
+        this.customer = customer;
+        console.log('[Dashboard] Cliente encontrado:', customer);
+      },
+      error: (error) => {
+        console.error('[Dashboard] Error al buscar:', error);
+        this.errorMessage = `No se encontró ningún cliente con correo: ${this.searchValue}`;
+      }
+    });
   }
 
-  /**
-   * Se ejecuta cuando el modal se cierra (ya sea por cancelar o guardar).
-   * @param saved - true si se guardó un cliente nuevo con éxito.
-   */
-  onModalClose(saved: boolean) {
-    this.showModal = false; // Siempre ocultamos el modal
-    if(saved) {
-      console.log('[Dashboard] Registro exitoso. Actualizando vista...');
-      // Si guardó, buscamos automáticamente para mostrar los datos recién creados
-      this.search(); 
+  private searchByDocument() {
+    const docNumber = Number(this.searchValue);
+    if (isNaN(docNumber)) {
+      this.errorMessage = 'El documento debe ser un número válido';
+      return;
     }
+
+    this.service.getCustomerByDocument(docNumber).subscribe({
+      next: (customer) => {
+        this.customer = customer;
+        console.log('[Dashboard] Cliente encontrado:', customer);
+      },
+      error: (error) => {
+        console.error('[Dashboard] Error al buscar:', error);
+        this.errorMessage = `No se encontró ningún cliente con documento: ${this.searchValue}`;
+      }
+    });
+  }
+
+  openModal() {
+    this.showModal = true;
+  }
+
+  onModalClose(saved: boolean) {
+    this.showModal = false;
   }
 }

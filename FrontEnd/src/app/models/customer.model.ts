@@ -1,13 +1,14 @@
 export interface Customer {
-  id: string;
-  name: string;
-  email: string;
-  contractType: 'MONTHLY' | 'ANNUAL';
+  customerId: string;
+  nombreCompleto: string;
+  correoElectronico: string;
+  documentoIdentidad: number;
+  propensoAChurn: boolean;
 }
 
 export interface ChurnPrediction {
   customerId: string;
-  prediction: string;     // Ej: "Va a cancelar"
-  probability: number;    // Ej: 0.78
+  prediction: string;
+  probability: number;
   riskLevel: 'HIGH' | 'MEDIUM' | 'LOW';
 }

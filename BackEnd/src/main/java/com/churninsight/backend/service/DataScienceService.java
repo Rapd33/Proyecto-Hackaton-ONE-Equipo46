@@ -4,20 +4,20 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.churninsight.backend.model.dto.response.CustomerDataDTO;
+import com.churninsight.backend.model.dto.CustomerDataDTO;
 
 import org.springframework.http.ResponseEntity;
 import java.util.Map;
 
 @Service
-public class AIService {
+public class DataScienceService {
 
     @Value("${ai.service.url}")
     private String aiUrl;
 
     private final RestTemplate restTemplate;
 
-    public AIService() {
+    public DataScienceService() {
         this.restTemplate = new RestTemplate();
     }
 

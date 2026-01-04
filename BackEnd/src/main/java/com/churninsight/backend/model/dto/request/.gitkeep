@@ -1,4 +1,0 @@
-# Request DTOs
-# Data Transfer Objects para recibir datos desde el cliente (Frontend)
-# Contiene validaciones con @Valid, @NotNull, @NotBlank, etc.
-# Ejemplo: CustomerDataRequest con los datos del cliente a analizar

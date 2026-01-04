@@ -78,3 +78,10 @@ secret.*
 *.crt
 *.p12
 *.pfx
+
+#Null files
+*.null
+*.void
+*.empty
+*.none
+NUL
