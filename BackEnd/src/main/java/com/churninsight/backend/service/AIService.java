@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.churninsight.backend.dtos.CustomerDataDTO;
+import com.churninsight.backend.model.dto.response.CustomerDataDTO;
 
 import org.springframework.http.ResponseEntity;
 import java.util.Map;

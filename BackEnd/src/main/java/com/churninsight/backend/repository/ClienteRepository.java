@@ -2,7 +2,7 @@ package com.churninsight.backend.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.churninsight.backend.model.Cliente;
+import com.churninsight.backend.model.entity.Cliente;
 
 import java.util.List;
 

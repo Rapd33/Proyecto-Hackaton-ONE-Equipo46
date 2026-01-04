@@ -1,4 +1,4 @@
-package com.churninsight.backend.model;
+package com.churninsight.backend.model.entity;
 
 import jakarta.persistence.*;
 

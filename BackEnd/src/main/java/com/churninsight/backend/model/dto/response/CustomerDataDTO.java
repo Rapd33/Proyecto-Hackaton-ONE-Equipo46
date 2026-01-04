@@ -1,4 +1,4 @@
-package com.churninsight.backend.dtos;
+package com.churninsight.backend.model.dto.response;
 
 public record CustomerDataDTO(
     // Variables Numéricas

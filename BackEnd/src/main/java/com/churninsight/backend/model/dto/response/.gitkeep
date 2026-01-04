@@ -1,4 +1,0 @@
-# Response DTOs
-# Data Transfer Objects para enviar respuestas al cliente
-# Incluye respuestas del microservicio Python y respuestas finales al frontend
-# Ejemplo: ChurnPredictionResponse (probabilidad + estado + estrategia)
