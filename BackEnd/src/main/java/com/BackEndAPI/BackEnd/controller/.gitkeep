@@ -1,3 +1,0 @@
-# Controllers / REST Endpoints
-# Capa de presentación que expone los endpoints REST de la API
-# Recibe las peticiones HTTP, valida datos básicos y delega la lógica al Service
