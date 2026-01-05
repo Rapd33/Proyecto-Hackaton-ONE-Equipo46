@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Customer } from '../models/customer.model';
+import { CustomerCreation } from '../models/customer-creation.model';
 
 @Injectable({
   providedIn: 'root'
@@ -50,5 +51,12 @@ export class CustomerService {
    */
   getCustomersAtRisk(): Observable<Customer[]> {
     return this.http.get<Customer[]>(`${this.apiUrl}/en-riesgo`);
+  }
+
+  /**
+   * Crear un nuevo cliente
+   */
+  createCustomer(customerData: CustomerCreation): Observable<Customer> {
+    return this.http.post<Customer>(this.apiUrl, customerData);
   }
 }

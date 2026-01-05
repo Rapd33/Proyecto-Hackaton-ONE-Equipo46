@@ -55,7 +55,7 @@ import { ClienteNuevoFormComponent } from '../../components/dashboard/cliente-nu
             (keyup.enter)="search()"
           />
           <button class="search-btn" (click)="search()">Buscar</button>
-          <button class="info-btn" (click)="openModal()">ℹ️ Info</button>
+          <button class="create-btn" (click)="openModal()">Agrega un usuario</button>
         </div>
 
         <div class="error-message" *ngIf="errorMessage">
@@ -156,11 +156,11 @@ import { ClienteNuevoFormComponent } from '../../components/dashboard/cliente-nu
       background: #2980b9;
     }
 
-    .info-btn {
-      background: #95a5a6;
+    .create-btn {
+      background: #7adb82ff;
     }
-    .info-btn:hover {
-      background: #7f8c8d;
+    .create-btn:hover {
+      background: #2daf38ff;
     }
 
     .error-message {

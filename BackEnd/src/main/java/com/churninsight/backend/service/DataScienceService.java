@@ -12,7 +12,7 @@ import java.util.Map;
 @Service
 public class DataScienceService {
 
-    @Value("${ai.service.url}")
+    @Value("${datascienceml.service.url}")
     private String aiUrl;
 
     private final RestTemplate restTemplate;
