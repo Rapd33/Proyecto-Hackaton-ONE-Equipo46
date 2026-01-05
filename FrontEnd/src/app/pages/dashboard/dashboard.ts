@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { CustomerService } from '../../services/customer';
 import { Customer } from '../../models/customer.model';
+import { PrediccionChurn } from '../../models/prediccion-churn.model';
 
 // --- Importación de Componentes Hijos (Piezas de la interfaz) ---
 import { NavbarComponent } from '../../components/navbar/navbar';
@@ -65,7 +66,7 @@ import { ClienteNuevoFormComponent } from '../../components/dashboard/cliente-nu
 
       <app-dashboard-general></app-dashboard-general>
 
-      <app-dashboard-cliente [customer]="customer"></app-dashboard-cliente>
+      <app-dashboard-cliente [prediccion]="prediccion" [loading]="loadingPrediction"></app-dashboard-cliente>
     </div>
 
     <app-footer></app-footer>
@@ -179,9 +180,11 @@ export class Dashboard {
   searchValue = '';
   showModal = false;
   errorMessage = '';
+  loadingPrediction = false;
 
   // Modelo de datos
   customer?: Customer;
+  prediccion?: PrediccionChurn;
 
   // Inyección del servicio
   private service = inject(CustomerService);
@@ -202,6 +205,7 @@ export class Dashboard {
   search() {
     this.errorMessage = '';
     this.customer = undefined;
+    this.prediccion = undefined;
 
     if (!this.searchValue.trim()) {
       this.errorMessage = 'Por favor ingresa un valor para buscar';
@@ -228,6 +232,8 @@ export class Dashboard {
       next: (customer) => {
         this.customer = customer;
         console.log('[Dashboard] Cliente encontrado:', customer);
+        // Obtener predicción automáticamente
+        this.loadPrediction(customer.customerId);
       },
       error: (error) => {
         console.error('[Dashboard] Error al buscar:', error);
@@ -241,6 +247,8 @@ export class Dashboard {
       next: (customer) => {
         this.customer = customer;
         console.log('[Dashboard] Cliente encontrado:', customer);
+        // Obtener predicción automáticamente
+        this.loadPrediction(customer.customerId);
       },
       error: (error) => {
         console.error('[Dashboard] Error al buscar:', error);
@@ -260,10 +268,28 @@ export class Dashboard {
       next: (customer) => {
         this.customer = customer;
         console.log('[Dashboard] Cliente encontrado:', customer);
+        // Obtener predicción automáticamente
+        this.loadPrediction(customer.customerId);
       },
       error: (error) => {
         console.error('[Dashboard] Error al buscar:', error);
         this.errorMessage = `No se encontró ningún cliente con documento: ${this.searchValue}`;
+      }
+    });
+  }
+
+  private loadPrediction(customerId: string) {
+    this.loadingPrediction = true;
+    this.service.getChurnPrediction(customerId).subscribe({
+      next: (prediccion) => {
+        this.prediccion = prediccion;
+        this.loadingPrediction = false;
+        console.log('[Dashboard] Predicción obtenida:', prediccion);
+      },
+      error: (error) => {
+        console.error('[Dashboard] Error al obtener predicción:', error);
+        this.loadingPrediction = false;
+        this.errorMessage = 'No se pudo obtener la predicción de churn. El microservicio de ML puede no estar disponible.';
       }
     });
   }

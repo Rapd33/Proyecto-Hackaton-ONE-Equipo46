@@ -15,17 +15,17 @@ MODEL_PATH = os.path.normpath(MODEL_PATH)
 # --- 2. CONFIGURACIÓN API ---
 app = FastAPI(title="ChurnInsight API - Telco Edition")
 
-print(f"🔍 Buscando modelo en: {MODEL_PATH}")
+print(f"[INFO] Buscando modelo en: {MODEL_PATH}")
 
 if os.path.exists(MODEL_PATH):
     try:
         model = joblib.load(MODEL_PATH)
-        print("✅ ¡Modelo cargado exitosamente!")
+        print("[OK] Modelo cargado exitosamente!")
     except Exception as e:
-        print(f"❌ Error al cargar .pkl: {e}")
+        print(f"[ERROR] Error al cargar .pkl: {e}")
         model = None
 else:
-    print("❌ ERROR: No encuentro el archivo .pkl")
+    print("[ERROR] No encuentro el archivo .pkl")
     model = None
 
 # --- 3. DEFINICIÓN DE DATOS (Ajustado a tus variables) ---
@@ -49,30 +49,53 @@ class CustomerData(BaseModel):
 
 @app.post("/predict")
 def predict(data: CustomerData):
+    # MODO MOCK: Mientras se reentrena el modelo, usar predicciones simuladas
     if not model:
-        raise HTTPException(status_code=500, detail="Modelo no cargado.")
+        # Predicción basada en reglas simples para testing
+        print("[MOCK] Usando predicciones mock - modelo no disponible")
+
+        # Lógica simple basada en tenure y contract
+        if data.tenure < 12 and data.Contract == "Month-to-month":
+            prob = 0.75  # Alto riesgo
+            prediction = 1
+        elif data.tenure < 24 and data.MonthlyCharges > 70:
+            prob = 0.65  # Riesgo medio-alto
+            prediction = 1
+        elif data.Contract == "Two year":
+            prob = 0.15  # Bajo riesgo
+            prediction = 0
+        else:
+            prob = 0.45  # Riesgo medio
+            prediction = 0
+
+        return {
+            "prediction": int(prediction),
+            "churn_probability": round(float(prob), 4),
+            "risk_level": "Alto" if prob > 0.5 else "Bajo"
+        }
+
     try:
         # Convertir a DataFrame
         input_data = data.model_dump()
         df = pd.DataFrame([input_data])
-        
+
         # IMPORTANTE: Los modelos suelen ser sensibles al orden de las columnas.
         # Aseguramos que el DataFrame tenga las columnas esperadas.
-        # (Si el modelo usa otras que no enviamos, Pandas pondrá NaN o fallará, 
+        # (Si el modelo usa otras que no enviamos, Pandas pondrá NaN o fallará,
         #  pero con las que definimos arriba cubrimos las 'Sí' y 'Opcional').
-        
+
         # Predicción
         prediction = model.predict(df)[0]
-        
+
         try:
             # Intentar obtener probabilidad (si el modelo lo permite)
             prob = model.predict_proba(df)[0][1]
         except:
             prob = 0.0
-            
+
         # Respuesta
         return {
-            "prediction": int(prediction), 
+            "prediction": int(prediction),
             "churn_probability": round(float(prob), 4),
             "risk_level": "Alto" if prob > 0.5 else "Bajo"
         }

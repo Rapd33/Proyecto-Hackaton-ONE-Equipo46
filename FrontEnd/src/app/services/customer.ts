@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Customer } from '../models/customer.model';
 import { CustomerCreation } from '../models/customer-creation.model';
+import { PrediccionChurn } from '../models/prediccion-churn.model';
 
 @Injectable({
   providedIn: 'root'
@@ -58,5 +59,12 @@ export class CustomerService {
    */
   createCustomer(customerData: CustomerCreation): Observable<Customer> {
     return this.http.post<Customer>(this.apiUrl, customerData);
+  }
+
+  /**
+   * Obtener predicción de churn para un cliente
+   */
+  getChurnPrediction(customerId: string): Observable<PrediccionChurn> {
+    return this.http.get<PrediccionChurn>(`${this.apiUrl}/${customerId}/predict`);
   }
 }

@@ -2,12 +2,15 @@ package com.churninsight.backend.service;
 
 import com.churninsight.backend.model.dto.ClienteCreacionDTO;
 import com.churninsight.backend.model.dto.ClienteDTO;
+import com.churninsight.backend.model.dto.CustomerDataDTO;
+import com.churninsight.backend.model.dto.PrediccionChurnDTO;
 import com.churninsight.backend.model.entity.Cliente;
 import com.churninsight.backend.repository.ClienteRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -17,6 +20,9 @@ public class ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+
+    @Autowired
+    private DataScienceService dataScienceService;
 
     /**
      * Convierte Cliente Entity a DTO simplificado
@@ -168,5 +174,112 @@ public class ClienteService {
         } while (clienteRepository.existsById(customerId));
 
         return customerId;
+    }
+
+    /**
+     * Convierte un Cliente a CustomerDataDTO para enviar al microservicio de ML
+     */
+    private CustomerDataDTO convertirACustomerDataDTO(Cliente cliente) {
+        // Convertir totalCharges de String a Double
+        Double totalCharges = 0.0;
+        try {
+            if (cliente.getTotalCharges() != null && !cliente.getTotalCharges().isEmpty()) {
+                totalCharges = Double.parseDouble(cliente.getTotalCharges());
+            }
+        } catch (NumberFormatException e) {
+            totalCharges = 0.0;
+        }
+
+        return new CustomerDataDTO(
+            cliente.getTenure(),
+            cliente.getMonthlyCharges(),
+            totalCharges,
+            cliente.getSeniorCitizen(),
+            cliente.getContract(),
+            cliente.getInternetService(),
+            cliente.getPaymentMethod(),
+            cliente.getTechSupport(),
+            cliente.getOnlineSecurity(),
+            cliente.getPartner(),
+            cliente.getDependents()
+        );
+    }
+
+    /**
+     * Obtener predicción de churn para un cliente específico
+     */
+    public PrediccionChurnDTO obtenerPrediccionChurn(String customerId) {
+        // Buscar el cliente
+        Optional<Cliente> clienteOpt = clienteRepository.findById(customerId);
+        if (clienteOpt.isEmpty()) {
+            throw new IllegalArgumentException("Cliente no encontrado con ID: " + customerId);
+        }
+
+        Cliente cliente = clienteOpt.get();
+
+        // Convertir a CustomerDataDTO
+        CustomerDataDTO customerData = convertirACustomerDataDTO(cliente);
+
+        // Llamar al microservicio de ML
+        Map<String, Object> mlResponse = dataScienceService.obtenerPrediccionCompleta(customerData);
+
+        // Extraer datos de la respuesta del ML
+        Integer prediction = (Integer) mlResponse.get("prediction");
+        Double probability = (Double) mlResponse.get("churn_probability");
+        String riskLevel = (String) mlResponse.get("risk_level");
+
+        // Generar estrategia de retención basada en el riesgo
+        String estrategia = generarEstrategiaRetencion(riskLevel, probability);
+        String recomendacion = generarRecomendacion(riskLevel, probability, cliente);
+
+        // Construir y retornar el DTO completo con datos del cliente
+        return new PrediccionChurnDTO(
+            cliente.getCustomerId(),
+            cliente.getNombreCompleto(),
+            cliente.getCorreoElectronico(),
+            cliente.getDocumentoIdentidad(),
+            prediction,
+            probability,
+            riskLevel,
+            estrategia,
+            recomendacion
+        );
+    }
+
+    /**
+     * Genera estrategia de retención según el nivel de riesgo
+     */
+    private String generarEstrategiaRetencion(String riskLevel, Double probability) {
+        if ("Alto".equalsIgnoreCase(riskLevel) || probability > 0.7) {
+            return "URGENTE - Contacto inmediato";
+        } else if (probability > 0.5) {
+            return "MEDIO - Seguimiento prioritario";
+        } else {
+            return "BAJO - Mantenimiento estándar";
+        }
+    }
+
+    /**
+     * Genera recomendaciones específicas según el perfil del cliente
+     */
+    private String generarRecomendacion(String riskLevel, Double probability, Cliente cliente) {
+        if ("Alto".equalsIgnoreCase(riskLevel)) {
+            // Clientes de alto riesgo
+            if ("Month-to-month".equals(cliente.getContract())) {
+                return "Ofrecer descuento en contrato anual. Cliente con contrato mensual tiene mayor probabilidad de cancelar.";
+            } else if ("Electronic check".equals(cliente.getPaymentMethod())) {
+                return "Incentivar cambio a método de pago automático con descuento del 5%.";
+            } else if ("Fiber optic".equals(cliente.getInternetService()) && cliente.getMonthlyCharges() > 70) {
+                return "Ofrecer plan personalizado con servicios adicionales sin costo por 3 meses.";
+            } else {
+                return "Contactar para encuesta de satisfacción y ofrecer beneficios exclusivos.";
+            }
+        } else if (probability > 0.3) {
+            // Clientes de riesgo medio
+            return "Enviar campaña de fidelización con beneficios por antigüedad.";
+        } else {
+            // Clientes de bajo riesgo
+            return "Mantener calidad de servicio y enviar comunicaciones periódicas de valor agregado.";
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.churninsight.backend.controller;
 
 import com.churninsight.backend.model.dto.ClienteCreacionDTO;
 import com.churninsight.backend.model.dto.ClienteDTO;
+import com.churninsight.backend.model.dto.PrediccionChurnDTO;
 import com.churninsight.backend.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -90,6 +91,24 @@ public class FrontEndController {
             // Otros errores
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error al crear el cliente: " + e.getMessage());
+        }
+    }
+
+    /**
+     * GET /api/clientes/{id}/predict - Obtener predicción de churn para un cliente
+     */
+    @GetMapping("/{id}/predict")
+    public ResponseEntity<?> obtenerPrediccionChurn(@PathVariable String id) {
+        try {
+            PrediccionChurnDTO prediccion = clienteService.obtenerPrediccionChurn(id);
+            return ResponseEntity.ok(prediccion);
+        } catch (IllegalArgumentException e) {
+            // Cliente no encontrado
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            // Error al conectar con el microservicio o error interno
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al obtener predicción: " + e.getMessage());
         }
     }
 }
