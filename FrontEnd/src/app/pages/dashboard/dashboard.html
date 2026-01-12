@@ -42,8 +42,6 @@
   <app-dashboard-cliente [prediccion]="prediccion" [loading]="loadingPrediction"></app-dashboard-cliente>
 </div>
 
-<app-footer></app-footer>
-
 <app-cliente-nuevo-form
   *ngIf="showModal"
   (close)="onModalClose($event)">
