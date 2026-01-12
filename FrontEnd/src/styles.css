@@ -4,14 +4,14 @@
 
 :root {
   /* PALETA "EXECUTIVE GOLD" (Basada en tu Logo) */
-  --primary-dark:   #1A2238; /* Navy Profundo (Fondos) */
+  --primary-dark:   #233258; /* Navy Profundo (Fondos) */
   --primary-light:  #2496BE; /* Cian/Azul Océano (Detalles) */
 
   --accent-color:   #C59D5F; /* Dorado (Botones Principales) */
   --accent-dark:    #A67C45; /* Dorado Oscuro (Hover) */
 
-  --text-main:      #1A2238;
-  --text-light:     #F5F5F5;
+  --text-main:      #4e5772;
+  --text-light:     #ffffff;
 
   --soft-bg:        #F4F4F4;
   --card-bg:        #FFFFFF;
@@ -42,7 +42,7 @@
 
   /* Text Colors */
   --text-primary: #2c3e50;
-  --text-secondary: #34495e;
+  --text-secondary: #43515f;
   --text-muted: #7f8c8d;
   --text-disabled: #95a5a6;
 
@@ -142,14 +142,15 @@ button {
   font-weight: bold;
   border: none;
   outline: none;
-  
+
   /* ANIMACIÓN SUAVE (La magia está aquí) */
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  
+
   /* Sombra base sutil */
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  
+
   /* Evita que el texto se seleccione al hacer clic rápido */
+  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -157,10 +158,10 @@ button {
 button:hover {
   /* Se levanta un poco (-3px) y crece ligeramente (scale 1.02) */
   transform: translateY(-3px) scale(1.02);
-  
+
   /* La sombra crece para dar sensación de altura */
   box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-  
+
   /* Brillo extra */
   filter: brightness(1.1);
 }

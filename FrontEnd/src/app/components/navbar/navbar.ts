@@ -25,4 +25,28 @@ export class NavbarComponent {
   goToHome() {
     this.router.navigate(['/']);
   }
+
+  /**
+   * Scroll suave a la sección de features
+   */
+  scrollToFeatures(): void {
+    const element = document.getElementById('features');
+    element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /**
+   * Scroll suave a la sección de equipo
+   */
+  scrollToAbout(): void {
+    const element = document.getElementById('about');
+    element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /**
+   * Scroll suave a la sección de contacto
+   */
+  scrollToContact(): void {
+    const element = document.getElementById('contact');
+    element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }

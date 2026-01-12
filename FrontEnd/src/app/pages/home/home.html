@@ -1,107 +1,220 @@
 <div class="home-container">
-  <!-- Hero Section -->
-  <div class="hero">
+  <!-- ============================================
+       HERO SECTION - Full Viewport Height
+       ============================================ -->
+  <section class="hero">
     <div class="hero-content">
       <!-- Logo Principal -->
       <img src="assets/LogoChurnInsight.png" alt="Logo ChurnInsight" class="logo-img">
 
-      <!-- H1 oculto para SEO -->
-      <h1 class="visually-hidden">ChurnInsight</h1>
+      <!-- H1 para SEO -->
+      <h1 class="hero-title">ChurnInsight</h1>
 
       <!-- Tagline -->
-      <p class="tagline">Predice, Adapta y Crece con Inteligencia Artificial.</p>
+      <p class="tagline">Predice, Adapta y Crece con Inteligencia Artificial</p>
 
-      <!-- Call to Action -->
-      <button type="button" class="cta-button" (click)="enterSystem()">
-        <span class="btn-text">Ingresar al Sistema</span>
-        <span class="btn-icon">🚀</span>
-      </button>
-    </div>
-  </div>
+      <!-- Subtitle -->
+      <p class="hero-subtitle">
+        Reduce el abandono de clientes hasta en un 40% con predicciones impulsadas por IA
+      </p>
 
-  <!-- Tabs Container -->
-  <div class="tabs-container">
-    <!-- Tabs Header -->
-    <div class="tabs-header">
-      <button
-        type="button"
-        [class.active]="activeTab === 'summary'"
-        (click)="setActiveTab('summary')"
-        aria-label="Mostrar resumen del proyecto">
-        📄 Resumen
-      </button>
-      <button
-        type="button"
-        [class.active]="activeTab === 'team'"
-        (click)="setActiveTab('team')"
-        aria-label="Mostrar equipo de desarrollo">
-        👥 Equipo 46
-      </button>
-      <button
-        type="button"
-        [class.active]="activeTab === 'tech'"
-        (click)="setActiveTab('tech')"
-        aria-label="Mostrar tecnologías utilizadas">
-        🛠️ Tecnologías
-      </button>
-    </div>
-
-    <!-- Tabs Content -->
-    <div class="tabs-content">
-      <!-- Tab: Resumen -->
-      <div *ngIf="activeTab === 'summary'" class="tab-pane fade-in">
-        <div class="grid-layout">
-          <div class="info-card highlight">
-            <h3>🎯 El Desafío</h3>
-            <p>
-              Las empresas pierden millones por cancelaciones. Nuestro objetivo es
-              <strong>predecir el abandono</strong> antes de que ocurra.
-            </p>
-          </div>
-          <div class="info-card">
-            <h3>💡 La Solución</h3>
-            <p>
-              Data Science entrena modelos predictivos y el Backend disponibiliza una API REST
-              para consultar el riesgo en tiempo real.
-            </p>
-          </div>
-          <div class="info-card full-width">
-            <h3>🚀 Funcionalidades MVP</h3>
-            <ul>
-              <li>✅ Endpoint <code>POST /predict</code>.</li>
-              <li>✅ Clasificación binaria (Cancelar/Continuar).</li>
-              <li>✅ Probabilidad numérica de riesgo.</li>
-            </ul>
-          </div>
-        </div>
+      <!-- CTA Buttons -->
+      <div class="cta-buttons">
+        <button type="button" class="cta-button primary" (click)="enterSystem()">
+          <span class="btn-text">Ingresar al Sistema</span>
+          <span class="btn-icon">🚀</span>
+        </button>
+        <button type="button" class="cta-button secondary" (click)="scrollToContact()">
+          <span class="btn-text">Contactar</span>
+          <span class="btn-icon">📧</span>
+        </button>
       </div>
 
-      <!-- Tab: Equipo -->
-      <div *ngIf="activeTab === 'team'" class="tab-pane fade-in">
-        <h3 class="team-title">Talento del Equipo 46 🚀</h3>
-        <div class="team-grid">
-          <div class="member-card" *ngFor="let member of teamMembers">
-            <div class="avatar">{{ member.initials }}</div>
-            <div class="member-info">
-              <h4>{{ member.name }}</h4>
-              <span class="role">{{ member.role }}</span>
-              <a [href]="member.linkedin" target="_blank" rel="noopener noreferrer" class="linkedin-btn">
-                LinkedIn 🔗
+      <!-- Scroll Indicator -->
+      <div class="scroll-indicator" (click)="scrollToFeatures()">
+        <span class="scroll-text">Descubre más</span>
+        <span class="scroll-arrow">↓</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FEATURES SECTION
+       ============================================ -->
+  <section class="features-section" id="features">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">¿Qué hace ChurnInsight?</h2>
+        <p class="section-description">
+          Una plataforma completa para predecir y prevenir el abandono de clientes
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card" *ngFor="let feature of features">
+          <div class="feature-icon">{{ feature.icon }}</div>
+          <h3 class="feature-title">{{ feature.title }}</h3>
+          <p class="feature-description">{{ feature.description }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       ABOUT US / TEAM SECTION
+       ============================================ -->
+  <section class="about-section" id="about">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Equipo 46</h2>
+        <p class="section-description">
+          Talento multidisciplinario comprometido con la innovación
+        </p>
+      </div>
+
+      <!-- Infinite Scroll Container -->
+      <div class="team-carousel-wrapper">
+        <div class="team-carousel">
+          <!-- Primera iteración de los miembros -->
+          <div class="team-member-card" *ngFor="let member of teamMembers">
+            <div class="member-avatar">
+              <span class="member-initials">{{ member.initials }}</span>
+            </div>
+            <div class="member-details">
+              <h4 class="member-name">{{ member.name }}</h4>
+              <p class="member-role">{{ member.role }}</p>
+              <a
+                [href]="member.linkedin"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="member-linkedin"
+                aria-label="Ver perfil de LinkedIn de {{ member.name }}">
+                <span class="linkedin-icon">in</span>
+              </a>
+            </div>
+          </div>
+          <!-- Segunda iteración para el efecto infinito -->
+          <div class="team-member-card" *ngFor="let member of teamMembers">
+            <div class="member-avatar">
+              <span class="member-initials">{{ member.initials }}</span>
+            </div>
+            <div class="member-details">
+              <h4 class="member-name">{{ member.name }}</h4>
+              <p class="member-role">{{ member.role }}</p>
+              <a
+                [href]="member.linkedin"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="member-linkedin"
+                aria-label="Ver perfil de LinkedIn de {{ member.name }}">
+                <span class="linkedin-icon">in</span>
               </a>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </section>
 
-      <!-- Tab: Tecnologías -->
-      <div *ngIf="activeTab === 'tech'" class="tab-pane fade-in">
-        <div class="tech-stack">
-          <div class="tech-item">🅰️ Angular</div>
-          <div class="tech-item">☕ Java Spring Boot</div>
-          <div class="tech-item">🐍 Python & Pandas</div>
-          <div class="tech-item">☁️ Oracle Cloud</div>
+  <!-- ============================================
+       CONTACT SECTION
+       ============================================ -->
+  <section class="contact-section" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Contáctanos</h2>
+        <p class="section-description">
+          ¿Tienes preguntas? Estamos aquí para ayudarte
+        </p>
+      </div>
+
+      <div class="contact-content">
+        <!-- Contact Form -->
+        <form class="contact-form" (ngSubmit)="onContactSubmit()" #contactForm="ngForm">
+          <div class="form-group">
+            <label for="contact-name">Nombre completo</label>
+            <input
+              type="text"
+              id="contact-name"
+              name="name"
+              [(ngModel)]="contactData.name"
+              required
+              placeholder="Tu nombre"
+              class="form-input">
+          </div>
+
+          <div class="form-group">
+            <label for="contact-email">Email</label>
+            <input
+              type="email"
+              id="contact-email"
+              name="email"
+              [(ngModel)]="contactData.email"
+              required
+              placeholder="tu@email.com"
+              class="form-input">
+          </div>
+
+          <div class="form-group">
+            <label for="contact-subject">Asunto</label>
+            <input
+              type="text"
+              id="contact-subject"
+              name="subject"
+              [(ngModel)]="contactData.subject"
+              required
+              placeholder="¿En qué podemos ayudarte?"
+              class="form-input">
+          </div>
+
+          <div class="form-group">
+            <label for="contact-message">Mensaje</label>
+            <textarea
+              id="contact-message"
+              name="message"
+              [(ngModel)]="contactData.message"
+              required
+              rows="5"
+              placeholder="Cuéntanos más..."
+              class="form-textarea"></textarea>
+          </div>
+
+          <button
+            type="submit"
+            class="submit-button"
+            [disabled]="!contactForm.valid || isSubmitting">
+            <span *ngIf="!isSubmitting">Enviar mensaje</span>
+            <span *ngIf="isSubmitting">Enviando...</span>
+          </button>
+        </form>
+
+        <!-- Contact Info -->
+        <div class="contact-info">
+          <div class="info-card">
+            <div class="info-icon">📧</div>
+            <h4>Email</h4>
+            <p>equipo46@churninsight.com</p>
+          </div>
+
+          <div class="info-card">
+            <div class="info-icon">🌐</div>
+            <h4>Tecnologías</h4>
+            <div class="tech-badges">
+              <span class="tech-badge">Angular</span>
+              <span class="tech-badge">Spring Boot</span>
+              <span class="tech-badge">Python</span>
+              <span class="tech-badge">Oracle Cloud</span>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-icon">🏆</div>
+            <h4>Proyecto Hackaton</h4>
+            <p>Oracle Next Education - Equipo 46</p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </div>
+
