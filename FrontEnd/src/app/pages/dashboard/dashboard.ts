@@ -34,6 +34,7 @@ export class Dashboard {
   showModal = false;
   errorMessage = '';
   loadingPrediction = false;
+  predictionError = false;
 
   // Modelo de datos
   customer?: Customer;
@@ -67,6 +68,7 @@ export class Dashboard {
     this.errorMessage = '';
     this.customer = undefined;
     this.prediccion = undefined;
+    this.predictionError = false;
 
     if (!this.searchValue.trim()) {
       this.errorMessage = 'Por favor ingresa un valor para buscar';
@@ -148,18 +150,20 @@ export class Dashboard {
 
   private loadPrediction(customerId: string) {
     this.loadingPrediction = true;
+    this.predictionError = false;
     this.cdr.detectChanges();
     this.service.getChurnPrediction(customerId).subscribe({
       next: (prediccion) => {
         this.prediccion = prediccion;
         this.loadingPrediction = false;
+        this.predictionError = false;
         console.log('[Dashboard] Predicción obtenida:', prediccion);
         this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('[Dashboard] Error al obtener predicción:', error);
         this.loadingPrediction = false;
-        this.errorMessage = 'No se pudo obtener la predicción de churn. El microservicio de ML puede no estar disponible.';
+        this.predictionError = true;
         this.cdr.detectChanges();
       }
     });

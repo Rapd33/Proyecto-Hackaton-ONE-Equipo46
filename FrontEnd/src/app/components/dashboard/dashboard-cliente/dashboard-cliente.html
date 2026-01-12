@@ -10,11 +10,22 @@
   <div class="header">
     <div class="client-info">
       <h2>{{ prediccion.nombreCompleto }}</h2>
+      <span class="status-badge" [ngClass]="customer?.propensoAChurn ? 'churned' : 'active'">
+        <svg *ngIf="!customer?.propensoAChurn" class="badge-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+        </svg>
+        <svg *ngIf="customer?.propensoAChurn" class="badge-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+        </svg>
+        {{ customer?.propensoAChurn ? 'Cliente Inactivo' : 'Cliente Activo' }}
+      </span>
       <p class="client-id">ID: {{ prediccion.customerId }}</p>
     </div>
-    <span class="risk-badge" [ngClass]="prediccion.riskLevel === 'Alto' ? 'HIGH' : 'LOW'">
-      {{ prediccion.riskLevel === 'Alto' ? 'RIESGO ALTO' : 'RIESGO BAJO' }}
-    </span>
+    <div class="badges-container">
+      <span class="risk-badge" [ngClass]="prediccion.riskLevel === 'Alto' ? 'HIGH' : 'LOW'">
+        {{ prediccion.riskLevel === 'Alto' ? 'RIESGO ALTO' : 'RIESGO BAJO' }}
+      </span>
+    </div>
   </div>
 
   <!-- Información básica del cliente -->
@@ -31,7 +42,12 @@
 
   <!-- Métricas de Predicción -->
   <div class="metrics-section">
-    <h3>📊 Análisis de Churn</h3>
+    <h3>
+      <svg class="section-icon" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+      </svg>
+      Análisis de Churn
+    </h3>
     <div class="metrics-grid">
       <div class="metric-card">
         <div class="metric-label">Probabilidad de Abandono</div>
@@ -57,7 +73,13 @@
 
   <!-- Estrategia de Retención -->
   <div class="strategy-section">
-    <h3>🎯 Estrategia de Retención</h3>
+    <h3>
+      <svg class="section-icon" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+        <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
+      </svg>
+      Estrategia de Retención
+    </h3>
     <div class="strategy-badge" [ngClass]="getStrategyClass()">
       {{ prediccion.estrategiaRetencion }}
     </div>
@@ -65,7 +87,12 @@
 
   <!-- Recomendaciones -->
   <div class="recommendations-section">
-    <h3>💡 Recomendaciones</h3>
+    <h3>
+      <svg class="section-icon" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
+      </svg>
+      Recomendaciones
+    </h3>
     <div class="recommendation-box">
       <p>{{ prediccion.recomendacion }}</p>
     </div>

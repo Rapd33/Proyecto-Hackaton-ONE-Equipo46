@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PrediccionChurn } from '../../../models/prediccion-churn.model';
+import { Customer } from '../../../models/customer.model';
 
 @Component({
   selector: 'app-dashboard-cliente',
@@ -10,6 +11,7 @@ import { PrediccionChurn } from '../../../models/prediccion-churn.model';
   styleUrls: ['./dashboard-cliente.css']
 })
 export class DashboardClienteComponent {
+  @Input() customer?: Customer;
   @Input() prediccion?: PrediccionChurn;
   @Input() loading = false;
 
