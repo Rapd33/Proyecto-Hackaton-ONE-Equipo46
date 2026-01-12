@@ -1,0 +1,29 @@
+.stats-grid {
+  display: flex;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-3xl);
+}
+
+.card {
+  flex: 1;
+  background: var(--bg-primary);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
+span {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  display: block;
+  margin-top: var(--spacing-md);
+}
+
+.warning span {
+  color: var(--color-warning);
+}
+
+.success span {
+  color: var(--color-success);
+}

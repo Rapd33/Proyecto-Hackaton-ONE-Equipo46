@@ -1,13 +1,107 @@
-<section id="hero">
+<div class="home-container">
+  <!-- Hero Section -->
+  <div class="hero">
+    <div class="hero-content">
+      <!-- Logo Principal -->
+      <img src="assets/LogoChurnInsight.png" alt="Logo ChurnInsight" class="logo-img">
 
-</section>
-<section id="features">
+      <!-- H1 oculto para SEO -->
+      <h1 class="visually-hidden">ChurnInsight</h1>
 
-</section>
-<section id="about-us">
+      <!-- Tagline -->
+      <p class="tagline">Predice, Adapta y Crece con Inteligencia Artificial.</p>
 
-</section>
-<section id="contact-us">
+      <!-- Call to Action -->
+      <button type="button" class="cta-button" (click)="enterSystem()">
+        <span class="btn-text">Ingresar al Sistema</span>
+        <span class="btn-icon">🚀</span>
+      </button>
+    </div>
+  </div>
 
-</section>
+  <!-- Tabs Container -->
+  <div class="tabs-container">
+    <!-- Tabs Header -->
+    <div class="tabs-header">
+      <button
+        type="button"
+        [class.active]="activeTab === 'summary'"
+        (click)="setActiveTab('summary')"
+        aria-label="Mostrar resumen del proyecto">
+        📄 Resumen
+      </button>
+      <button
+        type="button"
+        [class.active]="activeTab === 'team'"
+        (click)="setActiveTab('team')"
+        aria-label="Mostrar equipo de desarrollo">
+        👥 Equipo 46
+      </button>
+      <button
+        type="button"
+        [class.active]="activeTab === 'tech'"
+        (click)="setActiveTab('tech')"
+        aria-label="Mostrar tecnologías utilizadas">
+        🛠️ Tecnologías
+      </button>
+    </div>
 
+    <!-- Tabs Content -->
+    <div class="tabs-content">
+      <!-- Tab: Resumen -->
+      <div *ngIf="activeTab === 'summary'" class="tab-pane fade-in">
+        <div class="grid-layout">
+          <div class="info-card highlight">
+            <h3>🎯 El Desafío</h3>
+            <p>
+              Las empresas pierden millones por cancelaciones. Nuestro objetivo es
+              <strong>predecir el abandono</strong> antes de que ocurra.
+            </p>
+          </div>
+          <div class="info-card">
+            <h3>💡 La Solución</h3>
+            <p>
+              Data Science entrena modelos predictivos y el Backend disponibiliza una API REST
+              para consultar el riesgo en tiempo real.
+            </p>
+          </div>
+          <div class="info-card full-width">
+            <h3>🚀 Funcionalidades MVP</h3>
+            <ul>
+              <li>✅ Endpoint <code>POST /predict</code>.</li>
+              <li>✅ Clasificación binaria (Cancelar/Continuar).</li>
+              <li>✅ Probabilidad numérica de riesgo.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Equipo -->
+      <div *ngIf="activeTab === 'team'" class="tab-pane fade-in">
+        <h3 class="team-title">Talento del Equipo 46 🚀</h3>
+        <div class="team-grid">
+          <div class="member-card" *ngFor="let member of teamMembers">
+            <div class="avatar">{{ member.initials }}</div>
+            <div class="member-info">
+              <h4>{{ member.name }}</h4>
+              <span class="role">{{ member.role }}</span>
+              <a [href]="member.linkedin" target="_blank" rel="noopener noreferrer" class="linkedin-btn">
+                LinkedIn 🔗
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Tecnologías -->
+      <div *ngIf="activeTab === 'tech'" class="tab-pane fade-in">
+        <div class="tech-stack">
+          <div class="tech-item">🅰️ Angular</div>
+          <div class="tech-item">☕ Java Spring Boot</div>
+          <div class="tech-item">🐍 Python & Pandas</div>
+          <div class="tech-item">☁️ Oracle Cloud</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

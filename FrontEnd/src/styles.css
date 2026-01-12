@@ -6,15 +6,121 @@
   /* PALETA "EXECUTIVE GOLD" (Basada en tu Logo) */
   --primary-dark:   #1A2238; /* Navy Profundo (Fondos) */
   --primary-light:  #2496BE; /* Cian/Azul Océano (Detalles) */
-  
+
   --accent-color:   #C59D5F; /* Dorado (Botones Principales) */
   --accent-dark:    #A67C45; /* Dorado Oscuro (Hover) */
 
-  --text-main:      #1A2238; 
+  --text-main:      #1A2238;
   --text-light:     #F5F5F5;
-  
-  --soft-bg:        #F4F4F4; 
+
+  --soft-bg:        #F4F4F4;
   --card-bg:        #FFFFFF;
+
+  /* ==========================================================
+     DESIGN TOKENS - Sistema Expandido
+     ========================================================== */
+
+  /* Colors - Semantic */
+  --color-success: #27ae60;
+  --color-success-dark: #229954;
+  --color-success-light: #eafaf1;
+  --color-success-bg: #7adb82ff;
+  --color-success-bg-hover: #2daf38ff;
+
+  --color-danger: #e74c3c;
+  --color-danger-dark: #c0392b;
+  --color-danger-light: #fee;
+  --color-danger-bg: #ffe5e5;
+
+  --color-warning: #f39c12;
+  --color-warning-dark: #d68910;
+  --color-warning-light: #fef5e7;
+
+  --color-info: #3498db;
+  --color-info-dark: #2980b9;
+  --color-info-light: #eaf5fc;
+
+  /* Text Colors */
+  --text-primary: #2c3e50;
+  --text-secondary: #34495e;
+  --text-muted: #7f8c8d;
+  --text-disabled: #95a5a6;
+
+  /* Background Colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #ecf0f1;
+  --bg-overlay: rgba(0, 0, 0, 0.5);
+
+  /* Border Colors */
+  --border-color: #ddd;
+  --border-color-light: #e9ecef;
+  --border-color-dark: #bdc3c7;
+
+  /* Spacing Scale */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+  --spacing-3xl: 30px;
+  --spacing-4xl: 40px;
+
+  /* Font Sizes */
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.85rem;    /* 13.6px */
+  --font-size-base: 0.95rem;  /* 15.2px */
+  --font-size-md: 1rem;       /* 16px */
+  --font-size-lg: 1.2rem;     /* 19.2px */
+  --font-size-xl: 1.5rem;     /* 24px */
+  --font-size-2xl: 1.8rem;    /* 28.8px */
+  --font-size-3xl: 2rem;      /* 32px */
+
+  /* Font Weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+  --radius-2xl: 25px;
+  --radius-full: 50%;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 2px 10px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 4px 15px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --shadow-2xl: 0 10px 25px rgba(0, 0, 0, 0.2);
+  --shadow-button: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-button-hover: 0 10px 20px rgba(0, 0, 0, 0.2);
+  --shadow-button-active: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.3s ease;
+  --transition-smooth: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --transition-bounce: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* Z-index Scale */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+
+  /* Container Max Widths */
+  --container-sm: 540px;
+  --container-md: 720px;
+  --container-lg: 900px;
+  --container-xl: 1140px;
 }
 
 body {

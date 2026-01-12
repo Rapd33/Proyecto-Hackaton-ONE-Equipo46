@@ -1,0 +1,77 @@
+nav {
+  background-color: var(--primary-dark);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 2rem;
+  border-bottom: 3px solid var(--accent-color);
+  box-shadow: var(--shadow-xl);
+}
+
+/* --- MARCA INTERACTIVA --- */
+.brand-container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  cursor: pointer;
+  transition: var(--transition-base);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.brand-container:hover {
+  transform: scale(1.03);
+  opacity: 0.9;
+}
+
+.brand-container:active {
+  transform: scale(0.97);
+}
+
+.nav-logo {
+  height: 40px;
+  width: auto;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.brand-name {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.5px;
+  color: #fff;
+}
+
+/* --- PERFIL --- */
+.profile-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-2xl);
+  padding: var(--spacing-xs) var(--spacing-lg) var(--spacing-xs) var(--spacing-xl);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  color: white;
+}
+
+.profile-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: var(--accent-color);
+}
+
+.username {
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-md);
+}
+
+.avatar-circle {
+  background-color: var(--accent-color);
+  width: 35px;
+  height: 35px;
+  border-radius: var(--radius-full);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--font-size-lg);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}

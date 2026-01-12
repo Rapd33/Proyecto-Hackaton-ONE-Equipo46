@@ -1,1 +1,50 @@
-<p>dashboard works!</p>
+<app-navbar></app-navbar>
+
+<div class="container">
+
+  <div class="search-section">
+    <h2>Búsqueda de Clientes</h2>
+
+    <div class="search-options">
+      <label>
+        <input type="radio" [(ngModel)]="searchType" value="customerId" name="searchType" />
+        Por ID de Cliente
+      </label>
+      <label>
+        <input type="radio" [(ngModel)]="searchType" value="email" name="searchType" />
+        Por Correo Electrónico
+      </label>
+      <label>
+        <input type="radio" [(ngModel)]="searchType" value="document" name="searchType" />
+        Por Documento
+      </label>
+    </div>
+
+    <div class="search-bar">
+      <input
+        type="text"
+        [(ngModel)]="searchValue"
+        [placeholder]="getPlaceholder()"
+        (keyup.enter)="search()"
+        aria-label="Campo de búsqueda"
+      />
+      <button type="button" class="search-btn" (click)="search()">Buscar</button>
+      <button type="button" class="create-btn" (click)="openModal()">Agrega un usuario</button>
+    </div>
+
+    <div class="error-message" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <app-dashboard-general></app-dashboard-general>
+
+  <app-dashboard-cliente [prediccion]="prediccion" [loading]="loadingPrediction"></app-dashboard-cliente>
+</div>
+
+<app-footer></app-footer>
+
+<app-cliente-nuevo-form
+  *ngIf="showModal"
+  (close)="onModalClose($event)">
+</app-cliente-nuevo-form>

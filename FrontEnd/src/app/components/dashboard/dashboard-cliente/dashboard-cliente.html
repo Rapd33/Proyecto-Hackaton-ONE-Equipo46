@@ -1,1 +1,73 @@
-<p>dashboard-cliente works!</p>
+<!-- Loading State -->
+<div class="loading-card" *ngIf="loading">
+  <div class="spinner"></div>
+  <p>Analizando riesgo de churn con IA...</p>
+</div>
+
+<!-- Predicción Completa -->
+<div class="prediction-card" *ngIf="prediccion && !loading">
+  <!-- Header con datos del cliente -->
+  <div class="header">
+    <div class="client-info">
+      <h2>{{ prediccion.nombreCompleto }}</h2>
+      <p class="client-id">ID: {{ prediccion.customerId }}</p>
+    </div>
+    <span class="risk-badge" [ngClass]="prediccion.riskLevel === 'Alto' ? 'HIGH' : 'LOW'">
+      {{ prediccion.riskLevel === 'Alto' ? 'RIESGO ALTO' : 'RIESGO BAJO' }}
+    </span>
+  </div>
+
+  <!-- Información básica del cliente -->
+  <div class="client-details">
+    <div class="detail-item">
+      <span class="label">Correo:</span>
+      <span class="value">{{ prediccion.correoElectronico }}</span>
+    </div>
+    <div class="detail-item">
+      <span class="label">Documento:</span>
+      <span class="value">{{ prediccion.documentoIdentidad }}</span>
+    </div>
+  </div>
+
+  <!-- Métricas de Predicción -->
+  <div class="metrics-section">
+    <h3>📊 Análisis de Churn</h3>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Probabilidad de Abandono</div>
+        <div class="metric-value" [ngClass]="getProbabilityClass()">
+          {{ (prediccion.churnProbability * 100).toFixed(1) }}%
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill"
+               [style.width.%]="prediccion.churnProbability * 100"
+               [ngClass]="getProbabilityClass()">
+          </div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-label">Predicción</div>
+        <div class="metric-value">
+          {{ prediccion.prediction === 1 ? 'Probable Abandono' : 'Cliente Estable' }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estrategia de Retención -->
+  <div class="strategy-section">
+    <h3>🎯 Estrategia de Retención</h3>
+    <div class="strategy-badge" [ngClass]="getStrategyClass()">
+      {{ prediccion.estrategiaRetencion }}
+    </div>
+  </div>
+
+  <!-- Recomendaciones -->
+  <div class="recommendations-section">
+    <h3>💡 Recomendaciones</h3>
+    <div class="recommendation-box">
+      <p>{{ prediccion.recomendacion }}</p>
+    </div>
+  </div>
+</div>

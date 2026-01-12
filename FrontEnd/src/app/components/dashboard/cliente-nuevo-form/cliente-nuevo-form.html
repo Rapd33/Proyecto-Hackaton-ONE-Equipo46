@@ -1,1 +1,217 @@
-<p>cliente-nuevo-form works!</p>
+<div class="overlay" (click)="closeModal()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+    <h2>Registrar Nuevo Cliente</h2>
+
+    <div class="error-message" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <div class="success-message" *ngIf="successMessage">
+      {{ successMessage }}
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #customerForm="ngForm">
+
+      <!-- Sección: Datos Personales -->
+      <div class="form-section">
+        <h3>Datos Personales</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="nombre">Nombre *</label>
+            <input type="text" id="nombre" [(ngModel)]="formData.nombre" name="nombre" required>
+          </div>
+          <div class="form-group">
+            <label for="apellido">Apellido *</label>
+            <input type="text" id="apellido" [(ngModel)]="formData.apellido" name="apellido" required>
+          </div>
+          <div class="form-group">
+            <label for="documento">Documento de Identidad *</label>
+            <input type="number" id="documento" [(ngModel)]="formData.documentoIdentidad" name="documento" required>
+          </div>
+          <div class="form-group">
+            <label for="correo">Correo Electrónico *</label>
+            <input type="email" id="correo" [(ngModel)]="formData.correoElectronico" name="correo" required>
+          </div>
+          <div class="form-group">
+            <label for="gender">Género *</label>
+            <select id="gender" [(ngModel)]="formData.gender" name="gender" required>
+              <option value="">Seleccionar</option>
+              <option value="Male">Masculino</option>
+              <option value="Female">Femenino</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="seniorCitizen">Adulto Mayor *</label>
+            <select id="seniorCitizen" [(ngModel)]="formData.seniorCitizen" name="seniorCitizen" required>
+              <option [ngValue]="0">No</option>
+              <option [ngValue]="1">Sí</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="partner">Tiene Pareja *</label>
+            <select id="partner" [(ngModel)]="formData.partner" name="partner" required>
+              <option value="">Seleccionar</option>
+              <option value="Yes">Sí</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="dependents">Tiene Dependientes *</label>
+            <select id="dependents" [(ngModel)]="formData.dependents" name="dependents" required>
+              <option value="">Seleccionar</option>
+              <option value="Yes">Sí</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección: Servicios Telefónicos -->
+      <div class="form-section">
+        <h3>Servicios Telefónicos</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="phoneService">Servicio Telefónico *</label>
+            <select id="phoneService" [(ngModel)]="formData.phoneService" name="phoneService" required>
+              <option value="">Seleccionar</option>
+              <option value="Yes">Sí</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="multipleLines">Múltiples Líneas *</label>
+            <select id="multipleLines" [(ngModel)]="formData.multipleLines" name="multipleLines" required>
+              <option value="">Seleccionar</option>
+              <option value="Yes">Sí</option>
+              <option value="No">No</option>
+              <option value="No phone service">No tiene servicio</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección: Servicios de Internet -->
+      <div class="form-section">
+        <h3>Servicios de Internet</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="internetService">Servicio de Internet *</label>
+            <select id="internetService" [(ngModel)]="formData.internetService" name="internetService" required>
+              <option value="">Seleccionar</option>
+              <option value="DSL">DSL</option>
+              <option value="Fiber optic">Fibra Óptica</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="onlineSecurity">Seguridad Online *</label>
+            <select id="onlineSecurity" [(ngModel)]="formData.onlineSecurity" name="onlineSecurity" required>
+              <option value="">Seleccionar</option>
+              <option value="Yes">Sí</option>
+              <option value="No">No</option>
+              <option value="No internet service">No tiene internet</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="onlineBackup">Backup Online *</label>
+            <select id="onlineBackup" [(ngModel)]="formData.onlineBackup" name="onlineBackup" required>
+              <option value="">Seleccionar</option>
+              <option value="Yes">Sí</option>
+              <option value="No">No</option>
+              <option value="No internet service">No tiene internet</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="deviceProtection">Protección de Dispositivos *</label>
+            <select id="deviceProtection" [(ngModel)]="formData.deviceProtection" name="deviceProtection" required>
+              <option value="">Seleccionar</option>
+              <option value="Yes">Sí</option>
+              <option value="No">No</option>
+              <option value="No internet service">No tiene internet</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="techSupport">Soporte Técnico *</label>
+            <select id="techSupport" [(ngModel)]="formData.techSupport" name="techSupport" required>
+              <option value="">Seleccionar</option>
+              <option value="Yes">Sí</option>
+              <option value="No">No</option>
+              <option value="No internet service">No tiene internet</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="streamingTv">Streaming TV *</label>
+            <select id="streamingTv" [(ngModel)]="formData.streamingTv" name="streamingTv" required>
+              <option value="">Seleccionar</option>
+              <option value="Yes">Sí</option>
+              <option value="No">No</option>
+              <option value="No internet service">No tiene internet</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="streamingMovies">Streaming Películas *</label>
+            <select id="streamingMovies" [(ngModel)]="formData.streamingMovies" name="streamingMovies" required>
+              <option value="">Seleccionar</option>
+              <option value="Yes">Sí</option>
+              <option value="No">No</option>
+              <option value="No internet service">No tiene internet</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección: Contrato y Facturación -->
+      <div class="form-section">
+        <h3>Contrato y Facturación</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="contract">Tipo de Contrato *</label>
+            <select id="contract" [(ngModel)]="formData.contract" name="contract" required>
+              <option value="">Seleccionar</option>
+              <option value="Month-to-month">Mes a mes</option>
+              <option value="One year">Un año</option>
+              <option value="Two year">Dos años</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="paperlessBilling">Facturación Sin Papel *</label>
+            <select id="paperlessBilling" [(ngModel)]="formData.paperlessBilling" name="paperlessBilling" required>
+              <option value="">Seleccionar</option>
+              <option value="Yes">Sí</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="paymentMethod">Método de Pago *</label>
+            <select id="paymentMethod" [(ngModel)]="formData.paymentMethod" name="paymentMethod" required>
+              <option value="">Seleccionar</option>
+              <option value="Electronic check">Cheque Electrónico</option>
+              <option value="Mailed check">Cheque por Correo</option>
+              <option value="Bank transfer (automatic)">Transferencia Bancaria</option>
+              <option value="Credit card (automatic)">Tarjeta de Crédito</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="tenure">Antigüedad (meses) *</label>
+            <input type="number" id="tenure" [(ngModel)]="formData.tenure" name="tenure" required min="0">
+          </div>
+          <div class="form-group">
+            <label for="monthlyCharges">Cargo Mensual *</label>
+            <input type="number" id="monthlyCharges" [(ngModel)]="formData.monthlyCharges" name="monthlyCharges" required step="0.01" min="0">
+          </div>
+          <div class="form-group">
+            <label for="totalCharges">Cargo Total (opcional)</label>
+            <input type="number" id="totalCharges" [(ngModel)]="formData.totalCharges" name="totalCharges" step="0.01" min="0">
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="cancel" (click)="closeModal()">Cancelar</button>
+        <button type="submit" class="save" [disabled]="!customerForm.valid || isSubmitting">
+          {{ isSubmitting ? 'Guardando...' : 'Registrar Cliente' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
