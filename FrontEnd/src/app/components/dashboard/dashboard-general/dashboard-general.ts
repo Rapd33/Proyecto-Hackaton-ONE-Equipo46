@@ -34,6 +34,12 @@ export class DashboardGeneralComponent implements OnInit {
     bajo: 0
   };
 
+  // Exponer Math para usar en el template
+  Math = Math;
+
+  // Control del tooltip activo
+  activeTooltip: 'high' | 'medium' | 'low' | null = null;
+
   ngOnInit() {
     this.loadStats();
   }
@@ -113,5 +119,61 @@ export class DashboardGeneralComponent implements OnInit {
    */
   formatPercentage(num: number): string {
     return `${num.toFixed(1)}%`;
+  }
+
+  /**
+   * Muestra el tooltip para una sección específica del gráfico
+   */
+  showTooltip(section: 'high' | 'medium' | 'low') {
+    this.activeTooltip = section;
+  }
+
+  /**
+   * Oculta el tooltip activo
+   */
+  hideTooltip() {
+    this.activeTooltip = null;
+  }
+
+  /**
+   * Genera el path SVG para una sección del gráfico de pastel
+   * @param startPercent Porcentaje de inicio (0-100)
+   * @param endPercent Porcentaje de fin (0-100)
+   */
+  getPiePath(startPercent: number, endPercent: number): string {
+    const centerX = 50;
+    const centerY = 50;
+    const radius = 45; // Radio exterior (90% del radio total para dejar margen)
+    const innerRadius = 20; // Radio interior (para el efecto donut)
+
+    // Convertir porcentajes a ángulos (0% = -90°, 100% = 270°)
+    const startAngle = (startPercent * 3.6 - 90) * (Math.PI / 180);
+    const endAngle = (endPercent * 3.6 - 90) * (Math.PI / 180);
+
+    // Calcular puntos del arco exterior
+    const x1 = centerX + radius * Math.cos(startAngle);
+    const y1 = centerY + radius * Math.sin(startAngle);
+    const x2 = centerX + radius * Math.cos(endAngle);
+    const y2 = centerY + radius * Math.sin(endAngle);
+
+    // Calcular puntos del arco interior (en orden inverso)
+    const x3 = centerX + innerRadius * Math.cos(endAngle);
+    const y3 = centerY + innerRadius * Math.sin(endAngle);
+    const x4 = centerX + innerRadius * Math.cos(startAngle);
+    const y4 = centerY + innerRadius * Math.sin(startAngle);
+
+    // Determinar si el arco es mayor a 180 grados
+    const largeArcFlag = endPercent - startPercent > 50 ? 1 : 0;
+
+    // Construir el path SVG
+    const path = [
+      `M ${x1} ${y1}`, // Mover al punto inicial del arco exterior
+      `A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2}`, // Arco exterior
+      `L ${x3} ${y3}`, // Línea al punto final del arco interior
+      `A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 0 ${x4} ${y4}`, // Arco interior (inverso)
+      `Z` // Cerrar el path
+    ].join(' ');
+
+    return path;
   }
 }

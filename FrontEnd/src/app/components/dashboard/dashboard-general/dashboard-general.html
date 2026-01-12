@@ -73,26 +73,71 @@
     <!-- Gráfico de Pastel Principal -->
     <div class="main-chart-container">
       <h3 class="chart-title">Distribución de Riesgo</h3>
-      <div class="pie-chart"
-           [style.background]="'conic-gradient(
-             #ef4444 0% ' + riskDistribution.alto + '%,
-             #f59e0b ' + riskDistribution.alto + '% ' + (riskDistribution.alto + riskDistribution.medio) + '%,
-             #10b981 ' + (riskDistribution.alto + riskDistribution.medio) + '% 100%
-           )'">
+      <div class="pie-chart-wrapper">
+        <div class="pie-chart"
+             [style.background]="'conic-gradient(
+               #ef4444 0% ' + riskDistribution.alto + '%,
+               #f59e0b ' + riskDistribution.alto + '% ' + (riskDistribution.alto + riskDistribution.medio) + '%,
+               #10b981 ' + (riskDistribution.alto + riskDistribution.medio) + '% 100%
+             )'">
+        </div>
+        <!-- SVG invisible sobre el gráfico para detectar hover por secciones -->
+        <svg class="pie-chart-overlay" viewBox="0 0 100 100">
+          <!-- Sección Alto Riesgo -->
+          <path class="pie-section-path"
+                [attr.d]="getPiePath(0, riskDistribution.alto)"
+                (mouseenter)="showTooltip('high')"
+                (mouseleave)="hideTooltip()"
+                fill="transparent" />
+
+          <!-- Sección Riesgo Medio -->
+          <path class="pie-section-path"
+                [attr.d]="getPiePath(riskDistribution.alto, riskDistribution.alto + riskDistribution.medio)"
+                (mouseenter)="showTooltip('medium')"
+                (mouseleave)="hideTooltip()"
+                fill="transparent" />
+
+          <!-- Sección Bajo Riesgo -->
+          <path class="pie-section-path"
+                [attr.d]="getPiePath(riskDistribution.alto + riskDistribution.medio, 100)"
+                (mouseenter)="showTooltip('low')"
+                (mouseleave)="hideTooltip()"
+                fill="transparent" />
+        </svg>
       </div>
       <div class="chart-legend">
-        <div class="legend-item">
+        <div class="legend-item"
+             (mouseenter)="showTooltip('high')"
+             (mouseleave)="hideTooltip()">
           <span class="legend-color high"></span>
           <span class="legend-text">Alto ({{ formatPercentage(riskDistribution.alto) }})</span>
         </div>
-        <div class="legend-item">
+        <div class="legend-item"
+             (mouseenter)="showTooltip('medium')"
+             (mouseleave)="hideTooltip()">
           <span class="legend-color medium"></span>
           <span class="legend-text">Medio ({{ formatPercentage(riskDistribution.medio) }})</span>
         </div>
-        <div class="legend-item">
+        <div class="legend-item"
+             (mouseenter)="showTooltip('low')"
+             (mouseleave)="hideTooltip()">
           <span class="legend-color low"></span>
           <span class="legend-text">Bajo ({{ formatPercentage(riskDistribution.bajo) }})</span>
         </div>
+      </div>
+
+      <!-- Tooltips flotantes -->
+      <div class="floating-tooltip" *ngIf="activeTooltip === 'high'">
+        <strong>Alto Riesgo</strong>
+        <span>{{ formatNumber(stats!.clientesRiesgoAlto) }} clientes</span>
+      </div>
+      <div class="floating-tooltip" *ngIf="activeTooltip === 'medium'">
+        <strong>Riesgo Medio</strong>
+        <span>{{ formatNumber(stats!.clientesRiesgoMedio) }} clientes</span>
+      </div>
+      <div class="floating-tooltip" *ngIf="activeTooltip === 'low'">
+        <strong>Bajo Riesgo</strong>
+        <span>{{ formatNumber(stats!.clientesRiesgoBajo) }} clientes</span>
       </div>
     </div>
   </div>
