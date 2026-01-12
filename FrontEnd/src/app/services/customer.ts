@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Customer } from '../models/customer.model';
 import { CustomerCreation } from '../models/customer-creation.model';
 import { PrediccionChurn } from '../models/prediccion-churn.model';
+import { DashboardStats } from '../models/dashboard-stats.model';
 
 @Injectable({
   providedIn: 'root'
@@ -66,5 +67,12 @@ export class CustomerService {
    */
   getChurnPrediction(customerId: string): Observable<PrediccionChurn> {
     return this.http.get<PrediccionChurn>(`${this.apiUrl}/${customerId}/predict`);
+  }
+
+  /**
+   * Obtener estadísticas generales del dashboard
+   */
+  getDashboardStats(): Observable<DashboardStats> {
+    return this.http.get<DashboardStats>(`${this.apiUrl}/estadisticas`);
   }
 }

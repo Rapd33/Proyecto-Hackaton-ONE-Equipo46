@@ -5,26 +5,11 @@
   <div class="search-section">
     <h2>Búsqueda de Clientes</h2>
 
-    <div class="search-options">
-      <label>
-        <input type="radio" [(ngModel)]="searchType" value="customerId" name="searchType" />
-        Por ID de Cliente
-      </label>
-      <label>
-        <input type="radio" [(ngModel)]="searchType" value="email" name="searchType" />
-        Por Correo Electrónico
-      </label>
-      <label>
-        <input type="radio" [(ngModel)]="searchType" value="document" name="searchType" />
-        Por Documento
-      </label>
-    </div>
-
     <div class="search-bar">
       <input
         type="text"
         [(ngModel)]="searchValue"
-        [placeholder]="getPlaceholder()"
+        placeholder="Busca por ID de Cliente, Correo Electrónico o Documento"
         (keyup.enter)="search()"
         aria-label="Campo de búsqueda"
       />
@@ -38,6 +23,34 @@
   </div>
 
   <app-dashboard-general></app-dashboard-general>
+
+  <!-- Mostrar información del cliente encontrado -->
+  @if (customer && !prediccion && !loadingPrediction) {
+    <div class="client-found-card">
+      <div class="client-header">
+        <h3>Cliente Encontrado</h3>
+      </div>
+      <div class="client-basic-info">
+        <div class="info-row">
+          <span class="info-label">Nombre:</span>
+          <span class="info-value">{{ customer.nombreCompleto }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">ID:</span>
+          <span class="info-value">{{ customer.customerId }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Correo:</span>
+          <span class="info-value">{{ customer.correoElectronico }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Documento:</span>
+          <span class="info-value">{{ customer.documentoIdentidad }}</span>
+        </div>
+      </div>
+      <p class="loading-prediction-text">⏳ Cargando análisis de churn...</p>
+    </div>
+  }
 
   <app-dashboard-cliente [prediccion]="prediccion" [loading]="loadingPrediction"></app-dashboard-cliente>
 </div>

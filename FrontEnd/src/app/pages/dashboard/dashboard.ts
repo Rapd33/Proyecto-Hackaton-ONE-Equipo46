@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -30,7 +30,6 @@ import { ClienteNuevoFormComponent } from '../../components/dashboard/cliente-nu
 })
 export class Dashboard {
   // --- Variables de Estado ---
-  searchType: 'customerId' | 'email' | 'document' = 'email';
   searchValue = '';
   showModal = false;
   errorMessage = '';
@@ -42,18 +41,26 @@ export class Dashboard {
 
   // Inyección del servicio
   private service = inject(CustomerService);
+  private cdr = inject(ChangeDetectorRef);
 
-  getPlaceholder(): string {
-    switch (this.searchType) {
-      case 'customerId':
-        return '🔍 Ej: 7590-VHVEG';
-      case 'email':
-        return '🔍 Ej: ralvarez4776@outlook.com';
-      case 'document':
-        return '🔍 Ej: 16706640';
-      default:
-        return '🔍 Buscar...';
+  /**
+   * Detecta automáticamente el tipo de búsqueda basado en el formato del valor
+   */
+  private detectSearchType(value: string): 'customerId' | 'email' | 'document' {
+    const trimmedValue = value.trim();
+
+    // Detectar email por presencia de @
+    if (trimmedValue.includes('@')) {
+      return 'email';
     }
+
+    // Detectar documento si es solo números
+    if (/^\d+$/.test(trimmedValue)) {
+      return 'document';
+    }
+
+    // Por defecto, asumir que es customerId
+    return 'customerId';
   }
 
   search() {
@@ -66,9 +73,10 @@ export class Dashboard {
       return;
     }
 
-    console.log(`[Dashboard] Buscando por ${this.searchType}: ${this.searchValue}`);
+    const searchType = this.detectSearchType(this.searchValue);
+    console.log(`[Dashboard] Búsqueda inteligente detectada: ${searchType} para valor: ${this.searchValue}`);
 
-    switch (this.searchType) {
+    switch (searchType) {
       case 'customerId':
         this.searchByCustomerId();
         break;
@@ -86,12 +94,14 @@ export class Dashboard {
       next: (customer) => {
         this.customer = customer;
         console.log('[Dashboard] Cliente encontrado:', customer);
+        this.cdr.detectChanges(); // Forzar detección de cambios
         // Obtener predicción automáticamente
         this.loadPrediction(customer.customerId);
       },
       error: (error) => {
         console.error('[Dashboard] Error al buscar:', error);
         this.errorMessage = `No se encontró ningún cliente con ID: ${this.searchValue}`;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -101,12 +111,14 @@ export class Dashboard {
       next: (customer) => {
         this.customer = customer;
         console.log('[Dashboard] Cliente encontrado:', customer);
+        this.cdr.detectChanges(); // Forzar detección de cambios
         // Obtener predicción automáticamente
         this.loadPrediction(customer.customerId);
       },
       error: (error) => {
         console.error('[Dashboard] Error al buscar:', error);
         this.errorMessage = `No se encontró ningún cliente con correo: ${this.searchValue}`;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -122,28 +134,33 @@ export class Dashboard {
       next: (customer) => {
         this.customer = customer;
         console.log('[Dashboard] Cliente encontrado:', customer);
+        this.cdr.detectChanges(); // Forzar detección de cambios
         // Obtener predicción automáticamente
         this.loadPrediction(customer.customerId);
       },
       error: (error) => {
         console.error('[Dashboard] Error al buscar:', error);
         this.errorMessage = `No se encontró ningún cliente con documento: ${this.searchValue}`;
+        this.cdr.detectChanges();
       }
     });
   }
 
   private loadPrediction(customerId: string) {
     this.loadingPrediction = true;
+    this.cdr.detectChanges();
     this.service.getChurnPrediction(customerId).subscribe({
       next: (prediccion) => {
         this.prediccion = prediccion;
         this.loadingPrediction = false;
         console.log('[Dashboard] Predicción obtenida:', prediccion);
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('[Dashboard] Error al obtener predicción:', error);
         this.loadingPrediction = false;
         this.errorMessage = 'No se pudo obtener la predicción de churn. El microservicio de ML puede no estar disponible.';
+        this.cdr.detectChanges();
       }
     });
   }

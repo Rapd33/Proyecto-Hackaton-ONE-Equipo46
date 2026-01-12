@@ -3,6 +3,7 @@ package com.churninsight.backend.service;
 import com.churninsight.backend.model.dto.ClienteCreacionDTO;
 import com.churninsight.backend.model.dto.ClienteDTO;
 import com.churninsight.backend.model.dto.CustomerDataDTO;
+import com.churninsight.backend.model.dto.DashboardStatsDTO;
 import com.churninsight.backend.model.dto.PrediccionChurnDTO;
 import com.churninsight.backend.model.entity.Cliente;
 import com.churninsight.backend.repository.ClienteRepository;
@@ -281,5 +282,84 @@ public class ClienteService {
             // Clientes de bajo riesgo
             return "Mantener calidad de servicio y enviar comunicaciones periódicas de valor agregado.";
         }
+    }
+
+    /**
+     * Obtener estadísticas generales del dashboard
+     * Calcula métricas clave y distribución por nivel de riesgo usando heurísticas simples
+     */
+    public DashboardStatsDTO obtenerEstadisticasDashboard() {
+        // Obtener conteos básicos
+        Long totalClientes = clienteRepository.count();
+        Long clientesActivos = clienteRepository.countClientesActivos();
+        Long clientesDesertados = clienteRepository.countClientesDesertados();
+
+        // Calcular tasa de retención
+        Double tasaRetencion = totalClientes > 0
+                ? (clientesActivos.doubleValue() / totalClientes.doubleValue()) * 100.0
+                : 0.0;
+
+        // Obtener todos los clientes activos para analizar riesgo
+        List<Cliente> clientesActivosList = clienteRepository.findByChurn("No");
+
+        // Contadores para niveles de riesgo
+        int clientesRiesgoAlto = 0;
+        int clientesRiesgoMedio = 0;
+        int clientesRiesgoBajo = 0;
+
+        // Clasificar por nivel de riesgo usando heurísticas simples (sin ML)
+        // Esto es más rápido y no depende del microservicio de ML
+        for (Cliente cliente : clientesActivosList) {
+            int factoresRiesgo = 0;
+
+            // Factor 1: Contrato mensual (alto riesgo)
+            if ("Month-to-month".equals(cliente.getContract())) {
+                factoresRiesgo += 3;
+            }
+
+            // Factor 2: Tenure bajo (menos de 12 meses)
+            if (cliente.getTenure() != null && cliente.getTenure() < 12) {
+                factoresRiesgo += 2;
+            }
+
+            // Factor 3: Método de pago Electronic check (mayor riesgo)
+            if ("Electronic check".equals(cliente.getPaymentMethod())) {
+                factoresRiesgo += 2;
+            }
+
+            // Factor 4: Sin servicios adicionales (OnlineSecurity, TechSupport)
+            if ("No".equals(cliente.getOnlineSecurity()) || "No internet service".equals(cliente.getOnlineSecurity())) {
+                factoresRiesgo += 1;
+            }
+            if ("No".equals(cliente.getTechSupport()) || "No internet service".equals(cliente.getTechSupport())) {
+                factoresRiesgo += 1;
+            }
+
+            // Factor 5: Cargos mensuales altos sin servicios adicionales
+            if (cliente.getMonthlyCharges() != null && cliente.getMonthlyCharges() > 70
+                && "Fiber optic".equals(cliente.getInternetService())) {
+                factoresRiesgo += 1;
+            }
+
+            // Clasificar según factores de riesgo acumulados
+            if (factoresRiesgo >= 6) {
+                clientesRiesgoAlto++;
+            } else if (factoresRiesgo >= 3) {
+                clientesRiesgoMedio++;
+            } else {
+                clientesRiesgoBajo++;
+            }
+        }
+
+        // Construir y retornar el DTO
+        return new DashboardStatsDTO(
+                totalClientes.intValue(),
+                clientesActivos.intValue(),
+                clientesDesertados.intValue(),
+                Math.round(tasaRetencion * 10.0) / 10.0, // Redondear a 1 decimal
+                clientesRiesgoAlto,
+                clientesRiesgoMedio,
+                clientesRiesgoBajo
+        );
     }
 }

@@ -2,6 +2,7 @@ package com.churninsight.backend.controller;
 
 import com.churninsight.backend.model.dto.ClienteCreacionDTO;
 import com.churninsight.backend.model.dto.ClienteDTO;
+import com.churninsight.backend.model.dto.DashboardStatsDTO;
 import com.churninsight.backend.model.dto.PrediccionChurnDTO;
 import com.churninsight.backend.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,6 +110,21 @@ public class FrontEndController {
             // Error al conectar con el microservicio o error interno
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error al obtener predicción: " + e.getMessage());
+        }
+    }
+
+    /**
+     * GET /api/clientes/estadisticas - Obtener estadísticas generales del dashboard
+     */
+    @GetMapping("/estadisticas")
+    public ResponseEntity<?> obtenerEstadisticas() {
+        try {
+            DashboardStatsDTO stats = clienteService.obtenerEstadisticasDashboard();
+            return ResponseEntity.ok(stats);
+        } catch (Exception e) {
+            // Error al calcular estadísticas
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al obtener estadísticas: " + e.getMessage());
         }
     }
 }
