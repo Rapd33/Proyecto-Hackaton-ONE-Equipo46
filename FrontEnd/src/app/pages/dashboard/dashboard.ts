@@ -74,7 +74,6 @@ export class Dashboard {
     }
 
     const searchType = this.detectSearchType(this.searchValue);
-    console.log(`[Dashboard] Búsqueda inteligente detectada: ${searchType} para valor: ${this.searchValue}`);
 
     switch (searchType) {
       case 'customerId':
@@ -93,7 +92,6 @@ export class Dashboard {
     this.service.getCustomer(this.searchValue).subscribe({
       next: (customer) => {
         this.customer = customer;
-        console.log('[Dashboard] Cliente encontrado:', customer);
         this.cdr.detectChanges(); // Forzar detección de cambios
         // Obtener predicción automáticamente
         this.loadPrediction(customer.customerId);
@@ -110,7 +108,6 @@ export class Dashboard {
     this.service.getCustomerByEmail(this.searchValue).subscribe({
       next: (customer) => {
         this.customer = customer;
-        console.log('[Dashboard] Cliente encontrado:', customer);
         this.cdr.detectChanges(); // Forzar detección de cambios
         // Obtener predicción automáticamente
         this.loadPrediction(customer.customerId);
@@ -133,7 +130,6 @@ export class Dashboard {
     this.service.getCustomerByDocument(docNumber).subscribe({
       next: (customer) => {
         this.customer = customer;
-        console.log('[Dashboard] Cliente encontrado:', customer);
         this.cdr.detectChanges(); // Forzar detección de cambios
         // Obtener predicción automáticamente
         this.loadPrediction(customer.customerId);
@@ -155,7 +151,6 @@ export class Dashboard {
         this.prediccion = prediccion;
         this.loadingPrediction = false;
         this.predictionError = false;
-        console.log('[Dashboard] Predicción obtenida:', prediccion);
         this.cdr.detectChanges();
       },
       error: (error) => {

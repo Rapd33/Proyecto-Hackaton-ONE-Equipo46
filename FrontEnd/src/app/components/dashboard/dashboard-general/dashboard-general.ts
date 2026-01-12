@@ -48,17 +48,14 @@ export class DashboardGeneralComponent implements OnInit {
    * Carga las estadísticas del dashboard
    */
   private loadStats() {
-    console.log('[DashboardGeneral] Iniciando carga de estadísticas...');
     this.loading = true;
     this.errorMessage = '';
 
     this.service.getDashboardStats().subscribe({
       next: (data) => {
-        console.log('[DashboardGeneral] Datos recibidos del backend:', data);
         this.stats = data;
         this.calculateRiskDistribution();
         this.loading = false;
-        console.log('[DashboardGeneral] Estado final - loading:', this.loading, 'stats:', this.stats);
       },
       error: (error) => {
         console.error('[DashboardGeneral] Error completo:', error);
@@ -68,7 +65,6 @@ export class DashboardGeneralComponent implements OnInit {
         this.loading = false;
 
         // DATOS DE EJEMPLO TEMPORALES para depuración
-        console.warn('[DashboardGeneral] Usando datos de ejemplo temporales para depuración');
         this.stats = {
           totalClientes: 1240,
           clientesActivos: 1054,
@@ -80,9 +76,6 @@ export class DashboardGeneralComponent implements OnInit {
         };
         this.calculateRiskDistribution();
         this.loading = false;
-      },
-      complete: () => {
-        console.log('[DashboardGeneral] Observable completado');
       }
     });
   }
