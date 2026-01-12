@@ -6,7 +6,8 @@ import { Router } from '@angular/router'; // 1. Importamos el Router
  * COMPONENTE NAVBAR
  * Barra superior con navegación.
  * - Logo: Redirige al Home.
- * - Botón Admin: Muestra el usuario actual.
+ * - Nav Links: Navegación a secciones del home.
+ * - Botón CTA: Ingresar al sistema (dashboard).
  */
 @Component({
   selector: 'app-navbar',
@@ -79,5 +80,12 @@ export class NavbarComponent {
   private scrollToSection(sectionId: string): void {
     const element = document.getElementById(sectionId);
     element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /**
+   * Navega al dashboard
+   */
+  goToDashboard(): void {
+    this.router.navigate(['/dashboard']);
   }
 }
