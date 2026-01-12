@@ -8,7 +8,6 @@ import { PrediccionChurn } from '../../models/prediccion-churn.model';
 
 // --- Importación de Componentes Hijos (Piezas de la interfaz) ---
 import { NavbarComponent } from '../../components/navbar/navbar';
-import { FooterComponent } from '../../components/footer/footer';
 import { DashboardGeneralComponent } from '../../components/dashboard/dashboard-general/dashboard-general';
 import { DashboardClienteComponent } from '../../components/dashboard/dashboard-cliente/dashboard-cliente';
 import { ClienteNuevoFormComponent } from '../../components/dashboard/cliente-nuevo-form/cliente-nuevo-form';
@@ -20,7 +19,6 @@ import { ClienteNuevoFormComponent } from '../../components/dashboard/cliente-nu
     CommonModule,
     FormsModule,
     NavbarComponent,
-    FooterComponent,
     DashboardGeneralComponent,
     DashboardClienteComponent,
     ClienteNuevoFormComponent
@@ -173,7 +171,7 @@ export class Dashboard {
     this.showModal = true;
   }
 
-  onModalClose(saved: boolean) {
+  onModalClose(_saved: boolean) {
     this.showModal = false;
   }
 }
