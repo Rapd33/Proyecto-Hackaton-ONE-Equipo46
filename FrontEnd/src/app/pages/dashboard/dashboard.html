@@ -22,7 +22,8 @@
     </div>
   </div>
 
-  <app-dashboard-general></app-dashboard-general>
+  <!-- Dashboard General: solo se muestra cuando NO hay un cliente buscado -->
+  <app-dashboard-general *ngIf="!customer"></app-dashboard-general>
 
   <!-- Mostrar información del cliente encontrado -->
   @if (customer && !prediccion && !loadingPrediction) {
