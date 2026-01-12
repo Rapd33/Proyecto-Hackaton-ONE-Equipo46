@@ -1,13 +1,200 @@
-<section id="hero">
+<div class="home-container">
+  <!-- Scroll to Top Button -->
+  @if (showScrollToTop) {
+    <button
+      type="button"
+      class="scroll-to-top-btn"
+      (click)="scrollToTop()"
+      aria-label="Volver al inicio"
+      title="Volver al inicio">
+      <span class="arrow-icon">↑</span>
+    </button>
+  }
+  <!-- ============================================
+       HERO SECTION - Full Viewport Height
+       ============================================ -->
+  <section class="hero">
+    <div class="hero-content">
+      <!-- Logo Principal -->
+      <img src="assets/LogoChurnInsight.png" alt="Logo ChurnInsight" class="logo-img">
 
-</section>
-<section id="features">
+      <!-- H1 para SEO -->
+      <h1 class="hero-title">ChurnInsight</h1>
 
-</section>
-<section id="about-us">
+      <!-- Tagline -->
+      <p class="tagline">Predice, Adapta y Crece con Inteligencia Artificial</p>
 
-</section>
-<section id="contact-us">
+      <!-- Subtitle -->
+      <p class="hero-subtitle">
+        Reduce el abandono de clientes hasta en un 40% con predicciones impulsadas por IA
+      </p>
 
-</section>
+      <!-- CTA Buttons -->
+      <div class="cta-buttons">
+        <button type="button" class="cta-button primary" (click)="enterSystem()">
+          <span class="btn-text">Ingresar al Sistema</span>
+        </button>
+      </div>
+
+      <!-- Scroll Indicator -->
+      <div class="scroll-indicator" (click)="scrollToFeatures()">
+        <span class="scroll-text">Descubre más</span>
+        <span class="scroll-arrow">↓</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FEATURES SECTION
+       ============================================ -->
+  <section class="features-section" id="features">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">¿Qué hace ChurnInsight?</h2>
+        <p class="section-description">
+          Una plataforma completa para predecir y prevenir el abandono de clientes
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card" *ngFor="let feature of features">
+          <div class="feature-icon" [innerHTML]="feature.icon"></div>
+          <h3 class="feature-title">{{ feature.title }}</h3>
+          <p class="feature-description">{{ feature.description }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       ABOUT US / TEAM SECTION
+       ============================================ -->
+  <section class="about-section" id="about">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Equipo 46</h2>
+        <p class="section-description">
+          Talento multidisciplinario comprometido con la innovación
+        </p>
+      </div>
+
+      <!-- Infinite Scroll Container -->
+      <div class="team-carousel-wrapper">
+        <div class="team-carousel">
+          <!-- Primera iteración de los miembros -->
+          <div class="team-member-card" *ngFor="let member of teamMembers">
+            <div class="member-avatar">
+              <span class="member-initials">{{ member.initials }}</span>
+            </div>
+            <div class="member-details">
+              <h4 class="member-name">{{ member.name }}</h4>
+              <p class="member-role">{{ member.role }}</p>
+              <a
+                [href]="member.linkedin"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="member-linkedin"
+                aria-label="Ver perfil de LinkedIn de {{ member.name }}">
+                <span class="linkedin-icon">in</span>
+              </a>
+            </div>
+          </div>
+          <!-- Segunda iteración para el efecto infinito -->
+          <div class="team-member-card" *ngFor="let member of teamMembers">
+            <div class="member-avatar">
+              <span class="member-initials">{{ member.initials }}</span>
+            </div>
+            <div class="member-details">
+              <h4 class="member-name">{{ member.name }}</h4>
+              <p class="member-role">{{ member.role }}</p>
+              <a
+                [href]="member.linkedin"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="member-linkedin"
+                aria-label="Ver perfil de LinkedIn de {{ member.name }}">
+                <span class="linkedin-icon">in</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       CONTACT SECTION
+       ============================================ -->
+  <section class="contact-section" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Contáctanos</h2>
+        <p class="section-description">
+          ¿Tienes preguntas? Estamos aquí para ayudarte
+        </p>
+      </div>
+
+      <div class="contact-content">
+        <!-- Contact Form -->
+        <form class="contact-form" (ngSubmit)="onContactSubmit()" #contactForm="ngForm">
+          <div class="form-group">
+            <label for="contact-name">Nombre completo</label>
+            <input
+              type="text"
+              id="contact-name"
+              name="name"
+              [(ngModel)]="contactData.name"
+              required
+              placeholder="Tu nombre"
+              class="form-input">
+          </div>
+
+          <div class="form-group">
+            <label for="contact-email">Email</label>
+            <input
+              type="email"
+              id="contact-email"
+              name="email"
+              [(ngModel)]="contactData.email"
+              required
+              placeholder="tu@email.com"
+              class="form-input">
+          </div>
+
+          <div class="form-group">
+            <label for="contact-subject">Asunto</label>
+            <input
+              type="text"
+              id="contact-subject"
+              name="subject"
+              [(ngModel)]="contactData.subject"
+              required
+              placeholder="¿En qué podemos ayudarte?"
+              class="form-input">
+          </div>
+
+          <div class="form-group">
+            <label for="contact-message">Mensaje</label>
+            <textarea
+              id="contact-message"
+              name="message"
+              [(ngModel)]="contactData.message"
+              required
+              rows="5"
+              placeholder="Cuéntanos más..."
+              class="form-textarea"></textarea>
+          </div>
+
+          <button
+            type="submit"
+            class="submit-button"
+            [disabled]="!contactForm.valid || isSubmitting">
+            <span *ngIf="!isSubmitting">Enviar mensaje</span>
+            <span *ngIf="isSubmitting">Enviando...</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>
 

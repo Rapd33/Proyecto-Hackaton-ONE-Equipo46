@@ -1,1 +1,144 @@
-<p>dashboard-general works!</p>
+<!-- Estado de carga -->
+<div class="loading-container" *ngIf="loading">
+  <div class="spinner"></div>
+  <p>Cargando estadísticas...</p>
+</div>
+
+<!-- Error -->
+<div class="error-container" *ngIf="errorMessage && !loading">
+  <p>{{ errorMessage }}</p>
+</div>
+
+<!-- Dashboard General -->
+<div class="dashboard-general" *ngIf="stats && !loading">
+  <h2 class="section-title">Panel General de Estadísticas</h2>
+
+  <!-- Contenedor principal: Métricas + Gráfico -->
+  <div class="main-overview">
+    <!-- Grid de Métricas Principales -->
+    <div class="metrics-grid">
+      <!-- Clientes Totales -->
+      <div class="metric-card">
+        <div class="metric-icon total">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+          </svg>
+        </div>
+        <div class="metric-content">
+          <h3 class="metric-label">Clientes Totales</h3>
+          <p class="metric-value">{{ formatNumber(stats.totalClientes) }}</p>
+        </div>
+      </div>
+
+      <!-- Clientes Activos -->
+      <div class="metric-card">
+        <div class="metric-icon success">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div class="metric-content">
+          <h3 class="metric-label">Clientes Activos</h3>
+          <p class="metric-value success">{{ formatNumber(stats.clientesActivos) }}</p>
+        </div>
+      </div>
+
+      <!-- Clientes Desertados -->
+      <div class="metric-card">
+        <div class="metric-icon danger">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+          </svg>
+        </div>
+        <div class="metric-content">
+          <h3 class="metric-label">Clientes Desertados</h3>
+          <p class="metric-value danger">{{ formatNumber(stats.clientesDesertados) }}</p>
+        </div>
+      </div>
+
+      <!-- Tasa de Retención -->
+      <div class="metric-card">
+        <div class="metric-icon primary">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+          </svg>
+        </div>
+        <div class="metric-content">
+          <h3 class="metric-label">Tasa de Retención</h3>
+          <p class="metric-value primary">{{ formatPercentage(stats.tasaRetencion) }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráfico de Pastel Principal -->
+    <div class="main-chart-container">
+      <h3 class="chart-title">Distribución de Riesgo</h3>
+      <div class="pie-chart-wrapper">
+        <div class="pie-chart"
+             [style.background]="'conic-gradient(
+               #ef4444 0% ' + riskDistribution.alto + '%,
+               #f59e0b ' + riskDistribution.alto + '% ' + (riskDistribution.alto + riskDistribution.medio) + '%,
+               #10b981 ' + (riskDistribution.alto + riskDistribution.medio) + '% 100%
+             )'">
+        </div>
+        <!-- SVG invisible sobre el gráfico para detectar hover por secciones -->
+        <svg class="pie-chart-overlay" viewBox="0 0 100 100">
+          <!-- Sección Alto Riesgo -->
+          <path class="pie-section-path"
+                [attr.d]="getPiePath(0, riskDistribution.alto)"
+                (mouseenter)="showTooltip('high')"
+                (mouseleave)="hideTooltip()"
+                fill="transparent" />
+
+          <!-- Sección Riesgo Medio -->
+          <path class="pie-section-path"
+                [attr.d]="getPiePath(riskDistribution.alto, riskDistribution.alto + riskDistribution.medio)"
+                (mouseenter)="showTooltip('medium')"
+                (mouseleave)="hideTooltip()"
+                fill="transparent" />
+
+          <!-- Sección Bajo Riesgo -->
+          <path class="pie-section-path"
+                [attr.d]="getPiePath(riskDistribution.alto + riskDistribution.medio, 100)"
+                (mouseenter)="showTooltip('low')"
+                (mouseleave)="hideTooltip()"
+                fill="transparent" />
+        </svg>
+      </div>
+      <div class="chart-legend">
+        <div class="legend-item"
+             (mouseenter)="showTooltip('high')"
+             (mouseleave)="hideTooltip()">
+          <span class="legend-color high"></span>
+          <span class="legend-text">Alto ({{ formatPercentage(riskDistribution.alto) }})</span>
+        </div>
+        <div class="legend-item"
+             (mouseenter)="showTooltip('medium')"
+             (mouseleave)="hideTooltip()">
+          <span class="legend-color medium"></span>
+          <span class="legend-text">Medio ({{ formatPercentage(riskDistribution.medio) }})</span>
+        </div>
+        <div class="legend-item"
+             (mouseenter)="showTooltip('low')"
+             (mouseleave)="hideTooltip()">
+          <span class="legend-color low"></span>
+          <span class="legend-text">Bajo ({{ formatPercentage(riskDistribution.bajo) }})</span>
+        </div>
+      </div>
+
+      <!-- Tooltips flotantes -->
+      <div class="floating-tooltip" *ngIf="activeTooltip === 'high'">
+        <strong>Alto Riesgo</strong>
+        <span>{{ formatNumber(stats!.clientesRiesgoAlto) }} clientes</span>
+      </div>
+      <div class="floating-tooltip" *ngIf="activeTooltip === 'medium'">
+        <strong>Riesgo Medio</strong>
+        <span>{{ formatNumber(stats!.clientesRiesgoMedio) }} clientes</span>
+      </div>
+      <div class="floating-tooltip" *ngIf="activeTooltip === 'low'">
+        <strong>Bajo Riesgo</strong>
+        <span>{{ formatNumber(stats!.clientesRiesgoBajo) }} clientes</span>
+      </div>
+    </div>
+  </div>
+</div>

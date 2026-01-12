@@ -6,96 +6,15 @@ import { Router } from '@angular/router'; // 1. Importamos el Router
  * COMPONENTE NAVBAR
  * Barra superior con navegación.
  * - Logo: Redirige al Home.
- * - Botón Admin: Muestra el usuario actual.
+ * - Nav Links: Navegación a secciones del home.
+ * - Botón CTA: Ingresar al sistema (dashboard).
  */
 @Component({
   selector: 'app-navbar',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <nav>
-      <div class="brand-container" (click)="goToHome()" title="Volver al Inicio">
-        <img src="assets/LogoChurnInsight.png" alt="Logo ChurnInsight" class="nav-logo">
-        <span class="brand-name">ChurnInsight</span>
-      </div>
-
-      <div class="actions">
-        <button class="profile-btn">
-          <span class="username">Admin</span>
-          <div class="avatar-circle">👤</div>
-        </button>
-      </div>
-    </nav>
-  `,
-  styles: [`
-    /* Variables globales definidas en src/styles.css */
-    nav {
-      background-color: var(--primary-dark);
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.8rem 2rem;
-      border-bottom: 3px solid var(--accent-color);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-
-    /* --- MARCA INTERACTIVA --- */
-    .brand-container {
-      display: flex; 
-      align-items: center; 
-      gap: 12px;
-      
-      /* Hacemos que parezca un botón */
-      cursor: pointer; 
-      transition: transform 0.2s ease, opacity 0.2s; /* Animación suave */
-      
-      /* Evita selección de texto al hacer clic rápido */
-      user-select: none;
-    }
-
-    /* Efecto al pasar el mouse por el logo (Feedback visual) */
-    .brand-container:hover {
-      transform: scale(1.03); /* Crece un poquito */
-      opacity: 0.9;
-    }
-    
-    /* Efecto al hacer clic */
-    .brand-container:active {
-      transform: scale(0.97); /* Se hunde ligeramente */
-    }
-
-    .nav-logo {
-      height: 40px; width: auto;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-    }
-
-    .brand-name {
-      font-size: 1.4rem; font-weight: bold; letter-spacing: 0.5px; color: #fff;
-    }
-
-    /* --- PERFIL --- */
-    .profile-btn {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 50px;
-      padding: 5px 15px 5px 20px;
-      display: flex; align-items: center; gap: 12px; color: white;
-    }
-    .profile-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-      border-color: var(--accent-color);
-    }
-
-    .username { font-weight: 500; font-size: 1rem; }
-    .avatar-circle {
-      background-color: var(--accent-color);
-      width: 35px; height: 35px; border-radius: 50%;
-      display: flex; justify-content: center; align-items: center;
-      font-size: 1.2rem;
-      border: 2px solid rgba(255,255,255,0.2);
-    }
-  `]
+  templateUrl: './navbar.html',
+  styleUrls: ['./navbar.css']
 })
 export class NavbarComponent {
   // 2. Inyectamos el servicio Router para poder navegar
@@ -103,8 +22,70 @@ export class NavbarComponent {
 
   /**
    * Navega a la ruta raíz ('') que es el Home.
+   * Si ya estamos en home, hace scroll al inicio (hero)
    */
   goToHome() {
-    this.router.navigate(['/']);
+    const currentUrl = this.router.url;
+    if (currentUrl === '/' || currentUrl === '') {
+      // Si ya estamos en home, scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      // Si estamos en otra página, navegar al home
+      this.router.navigate(['/']);
+    }
+  }
+
+  /**
+   * Navega al home y hace scroll a la sección de features
+   */
+  scrollToFeatures(): void {
+    this.navigateAndScroll('features');
+  }
+
+  /**
+   * Navega al home y hace scroll a la sección de equipo
+   */
+  scrollToAbout(): void {
+    this.navigateAndScroll('about');
+  }
+
+  /**
+   * Navega al home y hace scroll a la sección de contacto
+   */
+  scrollToContact(): void {
+    this.navigateAndScroll('contact');
+  }
+
+  /**
+   * Navega al home si no estamos allí y hace scroll a la sección especificada
+   */
+  private navigateAndScroll(sectionId: string): void {
+    // Si ya estamos en el home, solo hacemos scroll
+    if (this.router.url === '/' || this.router.url === '') {
+      this.scrollToSection(sectionId);
+    } else {
+      // Navegamos al home primero y luego hacemos scroll
+      this.router.navigate(['/']).then(() => {
+        // Pequeño delay para asegurar que el DOM esté listo
+        setTimeout(() => {
+          this.scrollToSection(sectionId);
+        }, 100);
+      });
+    }
+  }
+
+  /**
+   * Hace scroll suave a la sección especificada
+   */
+  private scrollToSection(sectionId: string): void {
+    const element = document.getElementById(sectionId);
+    element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /**
+   * Navega al dashboard
+   */
+  goToDashboard(): void {
+    this.router.navigate(['/dashboard']);
   }
 }

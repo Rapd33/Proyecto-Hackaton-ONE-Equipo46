@@ -1,199 +1,93 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { NotificationService } from '../../services/notification.service';
+
+interface Feature {
+  icon: SafeHtml;
+  title: string;
+  description: string;
+}
+
+interface ContactForm {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
-  template: `
-    <div class="home-container">
-      
-      <div class="hero">
-        <div class="hero-content">
-          
-          <img src="assets/LogoChurnInsight.png" alt="Logo ChurnInsight" class="logo-img">
-          
-          <h1 class="visually-hidden">ChurnInsight</h1> 
-          
-          <p class="tagline">Predice, Adapta y Crece con Inteligencia Artificial.</p>
-          
-          <button class="cta-button" (click)="enterSystem()">
-            <span class="btn-text">Ingresar al Sistema</span>
-            <span class="btn-icon">🚀</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="tabs-container">
-        
-        <div class="tabs-header">
-          <button [class.active]="activeTab === 'summary'" (click)="setActiveTab('summary')">📄 Resumen</button>
-          <button [class.active]="activeTab === 'team'" (click)="setActiveTab('team')">👥 Equipo 46</button>
-          <button [class.active]="activeTab === 'tech'" (click)="setActiveTab('tech')">🛠️ Tecnologías</button>
-        </div>
-
-        <div class="tabs-content">
-          
-          <div *ngIf="activeTab === 'summary'" class="tab-pane fade-in">
-            <div class="grid-layout">
-              <div class="info-card highlight">
-                <h3>🎯 El Desafío</h3>
-                <p>Las empresas pierden millones por cancelaciones. Nuestro objetivo es <strong>predecir el abandono</strong> antes de que ocurra.</p>
-              </div>
-              <div class="info-card">
-                <h3>💡 La Solución</h3>
-                <p>Data Science entrena modelos predictivos y el Backend disponibiliza una API REST para consultar el riesgo en tiempo real.</p>
-              </div>
-              <div class="info-card full-width">
-                <h3>🚀 Funcionalidades MVP</h3>
-                <ul>
-                  <li>✅ Endpoint <code>POST /predict</code>.</li>
-                  <li>✅ Clasificación binaria (Cancelar/Continuar).</li>
-                  <li>✅ Probabilidad numérica de riesgo.</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div *ngIf="activeTab === 'team'" class="tab-pane fade-in">
-            <h3 style="text-align: center; margin-bottom: 2rem; color: var(--primary-dark);">Talento del Equipo 46 🚀</h3>
-            <div class="team-grid">
-              <div class="member-card" *ngFor="let member of teamMembers">
-                <div class="avatar">{{ member.initials }}</div>
-                <div class="member-info">
-                  <h4>{{ member.name }}</h4>
-                  <span class="role">{{ member.role }}</span>
-                  <a [href]="member.linkedin" target="_blank" class="linkedin-btn">LinkedIn 🔗</a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div *ngIf="activeTab === 'tech'" class="tab-pane fade-in">
-            <div class="tech-stack">
-              <div class="tech-item">🅰️ Angular</div>
-              <div class="tech-item">☕ Java Spring Boot</div>
-              <div class="tech-item">🐍 Python & Pandas</div>
-              <div class="tech-item">☁️ Oracle Cloud</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  `,
-  styles: [`
-    /* MANTENIMIENTO: Usamos variables de styles.css para la consistencia del tema 'Gold' */
-    
-    .home-container { min-height: 100vh; display: flex; flex-direction: column; }
-    
-    /* --- HERO SECTION --- */
-    .hero {
-      /* Degradado sutil sobre el Azul Navy para dar profundidad */
-      background: linear-gradient(135deg, var(--primary-dark) 0%, #0d121f 100%);
-      color: white; padding: 4rem 2rem; text-align: center;
-      border-bottom-left-radius: 50px; border-bottom-right-radius: 50px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    }
-    
-    /* Estilos para que el logo se vea centrado y nítido */
-    .logo-img { 
-      width: 220px; 
-      height: auto;
-      margin-bottom: 20px; 
-      filter: drop-shadow(0 5px 15px rgba(0,0,0,0.4)); /* Sombra para resaltar sobre el fondo oscuro */
-      transition: transform 0.3s;
-    }
-    .logo-img:hover { transform: scale(1.02); }
-
-    .visually-hidden { display: none; } /* Ocultamos el H1 visualmente pero sirve para estructura */
-    
-    .tagline { font-size: 1.3rem; margin-top: 10px; color: #D1D5DB; font-weight: 300; }
-
-    /* --- BOTÓN CTA (Dorado) --- */
-    .cta-button {
-      margin-top: 30px; padding: 15px 40px; font-size: 1.2rem;
-      border: none; border-radius: 50px;
-      
-      /* Gradiente Dorado para efecto metálico */
-      background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-dark) 100%);
-      color: white; font-weight: bold;
-      
-      box-shadow: 0 4px 15px rgba(197, 157, 95, 0.4); /* Sombra dorada */
-      display: inline-flex; align-items: center; gap: 10px;
-    }
-    .cta-button:hover {
-      transform: translateY(-3px) scale(1.05);
-      box-shadow: 0 8px 25px rgba(197, 157, 95, 0.6);
-    }
-
-    /* --- TABS --- */
-    .tabs-container { max-width: 1100px; margin: -40px auto 50px; padding: 0 20px; width: 100%; box-sizing: border-box; }
-    .tabs-header { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-    
-    .tabs-header button {
-      padding: 12px 25px; border: none; border-radius: 30px;
-      background: rgba(255, 255, 255, 0.9); color: var(--primary-dark); font-weight: 600;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    
-    .tabs-header button.active {
-      background: var(--primary-dark); color: var(--accent-color); /* Fondo Navy, Texto Dorado */
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--accent-color);
-    }
-
-    /* --- CONTENT CARDS --- */
-    .tabs-content { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); min-height: 300px; }
-    .grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    .full-width { grid-column: 1 / -1; }
-    
-    .info-card { 
-      padding: 20px; border-radius: 12px; background: var(--soft-bg); 
-      border-left: 4px solid var(--primary-light); /* Borde Cian */
-    }
-    .info-card.highlight { 
-      background: #F0F9FF; /* Azul muy pálido */
-      border-left-color: var(--accent-color); /* Borde Dorado */
-    }
-
-    /* --- TEAM --- */
-    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
-    .member-card {
-      background: white; border: 1px solid #eee; padding: 20px; border-radius: 12px;
-      text-align: center; display: flex; flex-direction: column; align-items: center;
-      transition: transform 0.2s;
-    }
-    .member-card:hover { transform: translateY(-5px); border-color: var(--accent-color); }
-    
-    .avatar {
-      width: 60px; height: 60px; 
-      background: var(--primary-dark); color: var(--accent-color); /* Navy & Dorado */
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem; font-weight: bold; margin-bottom: 10px;
-      border: 2px solid var(--accent-color);
-    }
-    
-    .linkedin-btn {
-      text-decoration: none; color: var(--primary-light); font-size: 0.8rem; font-weight: bold;
-      border: 1px solid var(--primary-light); padding: 4px 12px; border-radius: 20px;
-    }
-    .linkedin-btn:hover { background: var(--primary-light); color: white; }
-
-    /* --- TECH --- */
-    .tech-stack { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
-    .tech-item { background: var(--primary-dark); color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; }
-
-    .fade-in { animation: fadeIn 0.4s ease-in-out; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: 0; } }
-    @media (max-width: 768px) { .grid-layout { grid-template-columns: 1fr; } }
-  `]
+  imports: [CommonModule, FormsModule],
+  templateUrl: './home.html',
+  styleUrls: ['./home.css']
 })
 export class Home {
   private router = inject(Router);
-  activeTab: string = 'summary';
+  private notificationService = inject(NotificationService);
+  private sanitizer = inject(DomSanitizer);
+
+  // Estado del formulario de contacto
+  isSubmitting = false;
+  contactData: ContactForm = {
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  };
+
+  // Estado del botón scroll to top
+  showScrollToTop = false;
+
+  // Features de la plataforma
+  features: Feature[] = [
+    {
+      icon: this.sanitizer.bypassSecurityTrustHtml(`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>`),
+      title: 'Predicción Precisa',
+      description: 'Algoritmos de Machine Learning entrenados para identificar patrones de abandono con alta precisión.'
+    },
+    {
+      icon: this.sanitizer.bypassSecurityTrustHtml(`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+      </svg>`),
+      title: 'Análisis en Tiempo Real',
+      description: 'Monitorea el comportamiento de tus clientes y obtén predicciones instantáneas sobre su riesgo de churn.'
+    },
+    {
+      icon: this.sanitizer.bypassSecurityTrustHtml(`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+      </svg>`),
+      title: 'Estrategias Personalizadas',
+      description: 'Recibe recomendaciones específicas por rango de riesgo para retener a tus clientes efectivamente.'
+    },
+    {
+      icon: this.sanitizer.bypassSecurityTrustHtml(`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" />
+      </svg>`),
+      title: 'Dashboard Intuitivo',
+      description: 'Visualiza métricas clave y probabilidades de abandono en una interfaz clara y fácil de usar.'
+    },
+    {
+      icon: this.sanitizer.bypassSecurityTrustHtml(`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+      </svg>`),
+      title: 'Búsqueda Inteligente',
+      description: 'Encuentra clientes por ID, email o documento y consulta su perfil de riesgo al instante.'
+    },
+    {
+      icon: this.sanitizer.bypassSecurityTrustHtml(`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+      </svg>`),
+      title: 'API REST Escalable',
+      description: 'Integra nuestra solución con tus sistemas existentes mediante una API robusta y bien documentada.'
+    }
+  ];
 
   // INTEGRANTES (Orden A-Z)
   teamMembers = [
@@ -207,6 +101,69 @@ export class Home {
     { name: 'Richard Jerez', role: 'Data Scientist', initials: 'RJ', linkedin: '#' }
   ];
 
-  enterSystem() { this.router.navigate(['/dashboard']); }
-  setActiveTab(tabName: string) { this.activeTab = tabName; }
+  /**
+   * Navega al dashboard de la aplicación
+   */
+  enterSystem(): void {
+    this.router.navigate(['/dashboard']);
+  }
+
+  /**
+   * Scroll suave a la sección de features
+   */
+  scrollToFeatures(): void {
+    const element = document.getElementById('features');
+    element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /**
+   * Scroll suave a la sección de contacto
+   */
+  scrollToContact(): void {
+    const element = document.getElementById('contact');
+    element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /**
+   * Maneja el envío del formulario de contacto
+   */
+  onContactSubmit(): void {
+    if (this.isSubmitting) return;
+
+    this.isSubmitting = true;
+
+    // Simulación de envío (aquí puedes integrar con un backend real)
+    setTimeout(() => {
+      this.notificationService.success(
+        `¡Gracias ${this.contactData.name}! Hemos recibido tu mensaje y te contactaremos pronto.`
+      );
+
+      // Limpiar formulario
+      this.contactData = {
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+      };
+
+      this.isSubmitting = false;
+    }, 1500);
+  }
+
+  /**
+   * Escucha el scroll para mostrar/ocultar el botón scroll to top
+   */
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    // Mostrar botón cuando se ha scrolleado más de 300px
+    this.showScrollToTop = scrollPosition > 300;
+  }
+
+  /**
+   * Scroll suave al inicio de la página
+   */
+  scrollToTop(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }

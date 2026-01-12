@@ -1,4 +1,0 @@
-# Configuration Classes
-# Clases de configuración de Spring Boot (@Configuration)
-# Configuraciones de RestClient, CORS, seguridad, beans, etc.
-# Ejemplo: RestClientConfig para consumir el microservicio Python

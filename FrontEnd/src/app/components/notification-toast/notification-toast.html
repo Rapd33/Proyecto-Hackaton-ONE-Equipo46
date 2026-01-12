@@ -1,0 +1,15 @@
+<div class="toast-container">
+  @for (notification of notifications(); track notification.id) {
+    <div class="toast" [ngClass]="notification.type" role="alert">
+      <div class="toast-icon">{{ getIcon(notification.type) }}</div>
+      <div class="toast-message">{{ notification.message }}</div>
+      <button
+        type="button"
+        class="toast-close"
+        (click)="close(notification.id)"
+        aria-label="Cerrar notificación">
+        ×
+      </button>
+    </div>
+  }
+</div>

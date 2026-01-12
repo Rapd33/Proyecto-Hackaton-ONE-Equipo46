@@ -1,1 +1,106 @@
-<p>dashboard works!</p>
+<app-navbar></app-navbar>
+
+<div class="container">
+
+  <div class="search-section">
+    <h2>Búsqueda de Clientes</h2>
+
+    <div class="search-bar">
+      <input
+        type="text"
+        [(ngModel)]="searchValue"
+        placeholder="Busca por ID de Cliente, Correo Electrónico o Documento"
+        (keyup.enter)="search()"
+        aria-label="Campo de búsqueda"
+      />
+      <button type="button" class="search-btn" (click)="search()">Buscar</button>
+      <button type="button" class="create-btn" (click)="openModal()">Agrega un usuario</button>
+    </div>
+
+    <div class="error-message" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <!-- Dashboard General: solo se muestra cuando NO hay un cliente buscado -->
+  <app-dashboard-general *ngIf="!customer"></app-dashboard-general>
+
+  <!-- Mostrar información del cliente encontrado -->
+  @if (customer && !prediccion && !loadingPrediction) {
+    <div class="client-found-card">
+      <div class="client-header">
+        <h3>Cliente Encontrado</h3>
+      </div>
+      <div class="client-basic-info">
+        <div class="info-row">
+          <span class="info-label">Nombre:</span>
+          <span class="info-value">{{ customer.nombreCompleto }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">ID:</span>
+          <span class="info-value">{{ customer.customerId }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Correo:</span>
+          <span class="info-value">{{ customer.correoElectronico }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Documento:</span>
+          <span class="info-value">{{ customer.documentoIdentidad }}</span>
+        </div>
+      </div>
+      <p class="loading-prediction-text">⏳ Cargando análisis de churn...</p>
+    </div>
+  }
+
+  <!-- Si hay cliente pero hay error de predicción, mostrar solo datos básicos -->
+  @if (customer && predictionError) {
+    <div class="client-info-card">
+      <div class="client-header">
+        <h3>Información del Cliente</h3>
+        <span class="status-badge" [ngClass]="customer.propensoAChurn ? 'churned' : 'active'">
+          <svg *ngIf="!customer.propensoAChurn" class="badge-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+          </svg>
+          <svg *ngIf="customer.propensoAChurn" class="badge-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+          </svg>
+          {{ customer.propensoAChurn ? 'Cliente Inactivo' : 'Cliente Activo' }}
+        </span>
+      </div>
+      <div class="client-basic-info">
+        <div class="info-row">
+          <span class="info-label">Nombre:</span>
+          <span class="info-value">{{ customer.nombreCompleto }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">ID:</span>
+          <span class="info-value">{{ customer.customerId }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Correo:</span>
+          <span class="info-value">{{ customer.correoElectronico }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Documento:</span>
+          <span class="info-value">{{ customer.documentoIdentidad }}</span>
+        </div>
+      </div>
+      <div class="error-box">
+        <p>⚠️ No se pudo obtener el análisis predictivo de churn. El microservicio de ML puede no estar disponible.</p>
+      </div>
+    </div>
+  }
+
+  <!-- Dashboard completo del cliente solo si hay predicción exitosa -->
+  <app-dashboard-cliente
+    [customer]="customer"
+    [prediccion]="prediccion"
+    [loading]="loadingPrediction">
+  </app-dashboard-cliente>
+</div>
+
+<app-cliente-nuevo-form
+  *ngIf="showModal"
+  (close)="onModalClose($event)">
+</app-cliente-nuevo-form>

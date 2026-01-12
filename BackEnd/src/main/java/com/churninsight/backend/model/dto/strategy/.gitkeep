@@ -1,4 +1,0 @@
-# Strategy DTOs
-# DTOs relacionados con las estrategias de retención de clientes
-# Define la estructura de las estrategias que se retornan según la probabilidad de churn
-# Ejemplo: RetentionStrategy (título, descripción, acciones recomendadas)

@@ -1,0 +1,67 @@
+/*
+ * Footer Component Styles
+ * Utiliza las variables CSS del sistema de diseño
+ */
+
+.site-footer {
+  background: var(--primary-dark);
+  color: var(--text-on-dark);
+  padding: var(--spacing-3xl) var(--spacing-xl);
+  margin-top: auto;
+}
+
+.footer-content {
+  max-width: var(--container-lg);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-lg);
+  text-align: center;
+}
+
+.footer-brand h3 {
+  margin: 0 0 var(--spacing-xs);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  background: linear-gradient(135deg, var(--accent-color) 0%, #f4d29c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.footer-brand p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: #d1d5db;
+  font-weight: var(--font-weight-light);
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.footer-text {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: #9ca3af;
+}
+
+.footer-copyright {
+  margin: 0;
+  font-size: var(--font-size-xs);
+  color: #6b7280;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .site-footer {
+    padding: var(--spacing-2xl) var(--spacing-md);
+  }
+
+  .footer-brand h3 {
+    font-size: var(--font-size-lg);
+  }
+}
