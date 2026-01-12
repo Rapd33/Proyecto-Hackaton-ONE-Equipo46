@@ -133,6 +133,10 @@
   background: linear-gradient(135deg, var(--color-danger), var(--color-danger-dark));
 }
 
+.MEDIUM {
+  background: linear-gradient(135deg, var(--color-warning), var(--color-warning-dark));
+}
+
 .LOW {
   background: linear-gradient(135deg, var(--color-success), var(--color-success-dark));
 }

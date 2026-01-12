@@ -22,8 +22,9 @@
       <p class="client-id">ID: {{ prediccion.customerId }}</p>
     </div>
     <div class="badges-container">
-      <span class="risk-badge" [ngClass]="prediccion.riskLevel === 'Alto' ? 'HIGH' : 'LOW'">
-        {{ prediccion.riskLevel === 'Alto' ? 'RIESGO ALTO' : 'RIESGO BAJO' }}
+      <span class="risk-badge"
+            [ngClass]="prediccion.riskLevel === 'Alto' ? 'HIGH' : (prediccion.riskLevel === 'Medio' ? 'MEDIUM' : 'LOW')">
+        {{ prediccion.riskLevel === 'Alto' ? 'RIESGO ALTO' : (prediccion.riskLevel === 'Medio' ? 'RIESGO MEDIO' : 'RIESGO BAJO') }}
       </span>
     </div>
   </div>
