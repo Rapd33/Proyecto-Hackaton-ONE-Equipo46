@@ -21,32 +21,63 @@ export class NavbarComponent {
 
   /**
    * Navega a la ruta raíz ('') que es el Home.
+   * Si ya estamos en home, hace scroll al inicio (hero)
    */
   goToHome() {
-    this.router.navigate(['/']);
+    const currentUrl = this.router.url;
+    if (currentUrl === '/' || currentUrl === '') {
+      // Si ya estamos en home, scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      // Si estamos en otra página, navegar al home
+      this.router.navigate(['/']);
+    }
   }
 
   /**
-   * Scroll suave a la sección de features
+   * Navega al home y hace scroll a la sección de features
    */
   scrollToFeatures(): void {
-    const element = document.getElementById('features');
-    element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    this.navigateAndScroll('features');
   }
 
   /**
-   * Scroll suave a la sección de equipo
+   * Navega al home y hace scroll a la sección de equipo
    */
   scrollToAbout(): void {
-    const element = document.getElementById('about');
-    element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    this.navigateAndScroll('about');
   }
 
   /**
-   * Scroll suave a la sección de contacto
+   * Navega al home y hace scroll a la sección de contacto
    */
   scrollToContact(): void {
-    const element = document.getElementById('contact');
+    this.navigateAndScroll('contact');
+  }
+
+  /**
+   * Navega al home si no estamos allí y hace scroll a la sección especificada
+   */
+  private navigateAndScroll(sectionId: string): void {
+    // Si ya estamos en el home, solo hacemos scroll
+    if (this.router.url === '/' || this.router.url === '') {
+      this.scrollToSection(sectionId);
+    } else {
+      // Navegamos al home primero y luego hacemos scroll
+      this.router.navigate(['/']).then(() => {
+        // Pequeño delay para asegurar que el DOM esté listo
+        setTimeout(() => {
+          this.scrollToSection(sectionId);
+        }, 100);
+      });
+    }
+  }
+
+  /**
+   * Hace scroll suave a la sección especificada
+   */
+  private scrollToSection(sectionId: string): void {
+    const element = document.getElementById(sectionId);
     element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }

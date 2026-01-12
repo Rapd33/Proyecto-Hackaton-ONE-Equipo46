@@ -1,4 +1,15 @@
 <div class="home-container">
+  <!-- Scroll to Top Button -->
+  @if (showScrollToTop) {
+    <button
+      type="button"
+      class="scroll-to-top-btn"
+      (click)="scrollToTop()"
+      aria-label="Volver al inicio"
+      title="Volver al inicio">
+      <span class="arrow-icon">↑</span>
+    </button>
+  }
   <!-- ============================================
        HERO SECTION - Full Viewport Height
        ============================================ -->
@@ -52,7 +63,7 @@
 
       <div class="features-grid">
         <div class="feature-card" *ngFor="let feature of features">
-          <div class="feature-icon">{{ feature.icon }}</div>
+          <div class="feature-icon" [innerHTML]="feature.icon"></div>
           <h3 class="feature-title">{{ feature.title }}</h3>
           <p class="feature-description">{{ feature.description }}</p>
         </div>
