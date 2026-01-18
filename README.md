@@ -27,7 +27,7 @@ El equipo 46 del Hackaton ONE enfrenta el reto de crear una solución end-to-end
 ## ✨ Características
 
 ### 🤖 Machine Learning
-- Modelo **RandomForest** con pipeline completo de preprocesamiento
+- Modelo **GradientBoosting** con pipeline completo de preprocesamiento
 - Predicciones en tiempo real con FastAPI
 - Modo mock para desarrollo sin modelo entrenado
 - Métricas de riesgo: **Alto**, **Medio**, **Bajo**
@@ -55,7 +55,7 @@ El proyecto está dividido en **tres microservicios independientes** que se comu
 ChurnInsight/
 │
 ├── 🤖 DataScience/        # Microservicio de ML (FastAPI + scikit-learn)
-│   ├── Entrenamiento del modelo RandomForest
+│   ├── Entrenamiento del modelo GradientBoosting
 │   ├── API REST de predicciones
 │   └── Puerto: 8000
 │
@@ -75,7 +75,7 @@ ChurnInsight/
 ```
 Frontend (Angular) → Backend (Spring Boot) → DataScience (FastAPI)
       ↑                       ↓                        ↓
-   Usuario                SQLite DB            Modelo RandomForest
+   Usuario                SQLite DB            Modelo GradientBoosting
 ```
 
 ---
@@ -163,7 +163,7 @@ Una vez iniciados los tres servicios, verifica que funcionan:
 
 ### Machine Learning (DataScience)
 - **FastAPI** - Framework web moderno y rápido
-- **scikit-learn** - Modelo RandomForest
+- **scikit-learn** - Modelo GradientBoosting
 - **pandas** - Manipulación de datos
 - **Pydantic** - Validación de datos
 - **Uvicorn** - Servidor ASGI
@@ -192,7 +192,7 @@ Cada módulo tiene su propia documentación completa con guías de instalación,
 
 Documentación del microservicio de Machine Learning:
 - Instalación de Python y dependencias
-- Entrenamiento del modelo RandomForest
+- Entrenamiento del modelo GradientBoosting
 - Endpoints de la API de predicción
 - Health checks y monitoreo
 - Modo mock para desarrollo
@@ -400,7 +400,7 @@ Otros sistemas pueden:
 ## 🚀 Roadmap
 
 ### Versión Actual (v1.0)
-- ✅ Modelo RandomForest entrenado y funcional
+- ✅ Modelo GradientBoosting entrenado y funcional
 - ✅ API REST completa en FastAPI
 - ✅ Backend con Spring Boot y SQLite
 - ✅ Dashboard interactivo en Angular
