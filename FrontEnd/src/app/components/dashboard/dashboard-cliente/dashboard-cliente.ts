@@ -17,16 +17,16 @@ export class DashboardClienteComponent {
 
   getProbabilityClass(): string {
     if (!this.prediccion) return 'low';
-    if (this.prediccion.churnProbability > 0.7) return 'high';
-    if (this.prediccion.churnProbability > 0.5) return 'medium';
+    if (this.prediccion.churnProbability > 0.6666) return 'high';
+    if (this.prediccion.churnProbability > 0.3333) return 'medium';
     return 'low';
   }
 
   getStrategyClass(): string {
-    if (!this.prediccion) return 'low';
-    const estrategia = this.prediccion.estrategiaRetencion.toLowerCase();
-    if (estrategia.includes('urgente')) return 'urgent';
-    if (estrategia.includes('medio')) return 'medium';
+    if (!this.prediccion?.estrategias) return 'low';
+    const nivel = this.prediccion.estrategias.nivelRiesgo?.toLowerCase();
+    if (nivel === 'alto') return 'urgent';
+    if (nivel === 'medio') return 'medium';
     return 'low';
   }
 }

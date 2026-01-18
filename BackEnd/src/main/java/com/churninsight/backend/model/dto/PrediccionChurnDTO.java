@@ -15,18 +15,17 @@ public class PrediccionChurnDTO {
     // Datos de la predicción del ML
     private Integer prediction;           // 0 = No churn, 1 = Churn
     private Double churnProbability;      // 0.0 - 1.0
-    private String riskLevel;             // "Alto" o "Bajo"
+    private String riskLevel;             // "Alto", "Medio" o "Bajo"
 
-    // Estrategia agregada por el backend
-    private String estrategiaRetencion;
-    private String recomendacion;
+    // Estrategias de retención completas
+    private StrategysDTO estrategias;
 
     public PrediccionChurnDTO() {}
 
     public PrediccionChurnDTO(String customerId, String nombreCompleto, String correoElectronico,
                             Integer documentoIdentidad, Integer prediction,
                             Double churnProbability, String riskLevel,
-                            String estrategiaRetencion, String recomendacion) {
+                            StrategysDTO estrategias) {
         this.customerId = customerId;
         this.nombreCompleto = nombreCompleto;
         this.correoElectronico = correoElectronico;
@@ -34,8 +33,7 @@ public class PrediccionChurnDTO {
         this.prediction = prediction;
         this.churnProbability = churnProbability;
         this.riskLevel = riskLevel;
-        this.estrategiaRetencion = estrategiaRetencion;
-        this.recomendacion = recomendacion;
+        this.estrategias = estrategias;
     }
 
     // Getters y Setters
@@ -95,19 +93,11 @@ public class PrediccionChurnDTO {
         this.riskLevel = riskLevel;
     }
 
-    public String getEstrategiaRetencion() {
-        return estrategiaRetencion;
+    public StrategysDTO getEstrategias() {
+        return estrategias;
     }
 
-    public void setEstrategiaRetencion(String estrategiaRetencion) {
-        this.estrategiaRetencion = estrategiaRetencion;
-    }
-
-    public String getRecomendacion() {
-        return recomendacion;
-    }
-
-    public void setRecomendacion(String recomendacion) {
-        this.recomendacion = recomendacion;
+    public void setEstrategias(StrategysDTO estrategias) {
+        this.estrategias = estrategias;
     }
 }
