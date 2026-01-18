@@ -1,5 +1,3 @@
-import { RiskLevel } from './types.util';
-
 /**
  * Literales para niveles de riesgo en español
  */
@@ -9,6 +7,26 @@ export type RiskLevelES = 'Alto' | 'Bajo' | 'Medio';
  * Literales para predicción de churn
  */
 export type ChurnPrediction = 0 | 1;
+
+/**
+ * Detalle de una estrategia específica
+ */
+export interface EstrategiaDetalle {
+  numero: number;
+  titulo: string;
+  descripcion: string;
+  descuento: string | null;
+}
+
+/**
+ * DTO con todas las estrategias de retención
+ */
+export interface Estrategias {
+  nivelRiesgo: RiskLevelES;
+  rangoProbabilidad: string;
+  estrategiaPrincipal: string;
+  estrategiasDetalladas: EstrategiaDetalle[];
+}
 
 /**
  * Modelo para la predicción de churn de un cliente
@@ -26,7 +44,6 @@ export interface PrediccionChurn {
   churnProbability: number;         // 0.0 - 1.0
   riskLevel: RiskLevelES;           // "Alto", "Medio" o "Bajo"
 
-  // Estrategia de retención
-  estrategiaRetencion: string;
-  recomendacion: string;
+  // Estrategias de retención completas
+  estrategias: Estrategias;
 }
