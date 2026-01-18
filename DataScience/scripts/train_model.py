@@ -8,13 +8,13 @@ from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import GradientBoostingClassifier
 
 print(f"[INFO] Usando scikit-learn version: {sklearn.__version__}")
 
 # Cargar datos
 print("[INFO] Cargando datos...")
-data_path = "data/raw/telco_churn.csv"
+data_path = "data/raw/WA_Fn-UseC_-Telco-Customer-Churn.csv"
 df = pd.read_csv(data_path)
 
 print(f"[INFO] Dataset cargado: {df.shape[0]} filas, {df.shape[1]} columnas")
@@ -52,13 +52,13 @@ preprocessor = ColumnTransformer(
     ]
 )
 
-# Pipeline con RandomForest
+# Pipeline con GradientBoosting
 pipeline = Pipeline([
     ('preprocessor', preprocessor),
-    ('classifier', RandomForestClassifier(n_estimators=100, random_state=42, max_depth=10))
+    ('classifier', GradientBoostingClassifier(n_estimators=100, random_state=42, max_depth=3))
 ])
 
-print("[INFO] Entrenando modelo RandomForest...")
+print("[INFO] Entrenando modelo GradientBoosting...")
 pipeline.fit(X_train, y_train)
 
 # Evaluación
