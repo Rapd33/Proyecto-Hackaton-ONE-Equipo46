@@ -6,11 +6,24 @@
 **Dominio:** Telecomunicaciones / Servicios por Suscripción
 **Equipo:** Equipo 46 – Hackathon ONE / NoCountry
 
+
+Empresa: Teleco
+- Problema: Alta tasa de cancelación de clientes (churn)
+- Objetivo del proyecto: Analizar el comportamiento de clientes para identificar patrones asociados a la cancelación del servicio (churn), como base para entrenar un modelo predictivo capaz de prever qué clientes tienen mayor probabilidad churn.
+
+- La empresa quiere anticiparse al problema de la cancelación, respondiendo preguntas como:
+
+1. ¿Quienes son los clientes con mayor riesgo de evasión?
+2. ¿Qué variables influyen más en este comportamiento?
+3. ¿Qué perfil de cliente debemos cuidar con mayor atención?
+
+Este conocimiento es necesario para ayudar a implemenar acciones de retención y estrategias personalizadas
+
 ---
 
 ## 🚀 1. Resumen Ejecutivo
 
-El presente informe documenta el tratamiento realizado a los datos hasta llegar al modelo y propuesta de estrategias por rangos de probabilidad del proyecto **ChurnInsight**, cuyo objetivo es **predecir la probabilidad de cancelación (churn) de clientes** de una empresa de telecomunicaciones, el modelo se dispone en un archivo pkl para consumo mediante microservicio.
+El presente informe documenta el tratamiento realizado a los datos hasta llegar al modelo y propuesta de estrategias por rangos de probabilidad del proyecto **ChurnInsight**. El modelo se dispone en un archivo pkl para consumo mediante microservicio.
 
 A partir del dataset **Telco Customer Churn**, se realizó un proceso completo de:
 
