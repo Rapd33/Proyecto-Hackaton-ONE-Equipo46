@@ -2,9 +2,9 @@
 
 ## 🌐 Proyecto
 
-**Nombre:** ChurnInsight — Predicción de Cancelación de Clientes
-**Dominio:** Telecomunicaciones / Servicios por Suscripción
-**Equipo:** Equipo 46 – Hackathon ONE / NoCountry
+- **Nombre:** ChurnInsight — Predicción de Cancelación de Clientes
+- **Dominio:** Telecomunicaciones / Servicios por Suscripción
+- **Equipo:** Equipo 46 – Hackathon ONE / NoCountry
 
 
 Empresa: Teleco
