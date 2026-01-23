@@ -361,18 +361,31 @@
   margin-bottom: var(--spacing-md);
 }
 
-.member-linkedin {
+.member-links {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.member-linkedin,
+.member-github {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #0077b5;
   color: white;
   text-decoration: none;
   transition: all var(--transition-fast);
-  margin: 0 auto;
+}
+
+.member-linkedin {
+  background: #0077b5;
+}
+
+.member-github {
+  background: #333;
 }
 
 .member-linkedin:hover {
@@ -380,9 +393,19 @@
   box-shadow: 0 4px 12px rgba(0, 119, 181, 0.4);
 }
 
+.member-github:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 12px rgba(51, 51, 51, 0.4);
+}
+
 .linkedin-icon {
   font-weight: var(--font-weight-bold);
   font-size: var(--font-size-base);
+}
+
+.github-icon {
+  width: 20px;
+  height: 20px;
 }
 
 /* ========================================

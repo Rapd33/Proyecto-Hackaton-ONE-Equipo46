@@ -1,11 +1,29 @@
 # DataScience - Microservicio de Predicción de Churn
 
-Microservicio de Machine Learning desarrollado con FastAPI que predice la probabilidad de abandono (churn) de clientes en el sector de telecomunicaciones. Utiliza un modelo RandomForest entrenado con scikit-learn.
+Microservicio de Machine Learning desarrollado con FastAPI que predice la probabilidad de abandono (churn) de clientes en el sector de telecomunicaciones. Utiliza un modelo GradientBoosting entrenado con scikit-learn.
+
+---
+
+## 📖 Contexto del Proyecto
+
+**ChurnInsight** nace de una problemática real: una empresa de telecomunicaciones enfrenta altas tasas de cancelación de clientes. El objetivo es responder preguntas clave como:
+
+- ¿Quiénes son los clientes con mayor riesgo de abandono?
+- ¿Qué variables influyen más en este comportamiento?
+- ¿Qué perfil de cliente debemos priorizar en estrategias de retención?
+
+A través de un análisis exploratorio profundo, se identificaron patrones claros: clientes con **contratos mes a mes**, **baja antigüedad** y **cargos mensuales altos** presentan mayor riesgo. Se evaluaron 7 modelos de ML con distintas técnicas de balanceo, seleccionando **Gradient Boosting con SMOTE** por su equilibrio entre detección de churners (Recall: 79%) y fiabilidad de predicciones (AUC: 0.84).
+
+El modelo se traduce en **estrategias accionables de negocio** según rangos de probabilidad de churn.
+
+👉 **[Leer el Informe Completo](Informe%20Final%20-%20ChurnInsight%20(Telco%20Customer%20Churn).md)** — Incluye EDA detallado, comparativa de modelos, métricas y estrategias de retención propuestas.
+
+---
 
 ## 🚀 Características
 
 - **API REST con FastAPI**: Endpoints rápidos y documentados automáticamente
-- **Modelo RandomForest**: Pipeline completo con preprocesamiento y clasificación
+- **Modelo GradientBoosting**: Pipeline completo con preprocesamiento y clasificación
 - **Modo Mock**: Predicciones basadas en reglas cuando el modelo no está disponible
 - **Arquitectura Hexagonal**: Código limpio y mantenible
 - **CORS Configurado**: Listo para integrarse con el backend Spring Boot
@@ -269,7 +287,7 @@ app.add_middleware(
 
 ### Características
 
-- **Algoritmo**: Random Forest Classifier
+- **Algoritmo**: GradientBoosting
 - **Features**: 11 variables (4 numéricas, 7 categóricas)
 - **Preprocesamiento**: StandardScaler para numéricas, OneHotEncoder para categóricas
 - **Pipeline**: Completo con transformaciones y modelo
@@ -310,7 +328,7 @@ Convierte el CSV de clientes a base de datos SQLite para el backend.
 python scripts/train_model.py
 ```
 
-Entrena un nuevo modelo RandomForest con los datos de telco.
+Entrena un nuevo modelo GradientBoosting con los datos de telco.
 
 ## 🐛 Solución de Problemas
 

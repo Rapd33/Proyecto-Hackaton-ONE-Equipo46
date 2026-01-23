@@ -281,3 +281,81 @@ h3 {
   line-height: 1.6;
   font-size: var(--font-size-base);
 }
+
+/* Range badge en el header de estrategia */
+.range-badge {
+  margin-left: auto;
+  padding: var(--spacing-xs) var(--spacing-md);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-muted);
+}
+
+/* Lista de estrategias detalladas */
+.strategies-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.strategy-item {
+  background: var(--bg-secondary);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--color-info);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.strategy-item:hover {
+  transform: translateX(4px);
+  box-shadow: var(--shadow-md);
+}
+
+.strategy-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.strategy-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--color-info);
+  color: white;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  flex-shrink: 0;
+}
+
+.strategy-title {
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  font-size: var(--font-size-md);
+  flex: 1;
+}
+
+.discount-badge {
+  padding: var(--spacing-xs) var(--spacing-md);
+  background: linear-gradient(135deg, var(--color-success), var(--color-success-dark));
+  color: white;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.strategy-description {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-size: var(--font-size-sm);
+  padding-left: calc(28px + var(--spacing-md));
+}

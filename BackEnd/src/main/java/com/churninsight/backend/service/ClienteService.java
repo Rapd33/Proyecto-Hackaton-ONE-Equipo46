@@ -5,8 +5,11 @@ import com.churninsight.backend.model.dto.ClienteDTO;
 import com.churninsight.backend.model.dto.CustomerDataDTO;
 import com.churninsight.backend.model.dto.DashboardStatsDTO;
 import com.churninsight.backend.model.dto.PrediccionChurnDTO;
+import com.churninsight.backend.model.dto.StrategysDTO;
+import com.churninsight.backend.model.dto.StrategysDTO.EstrategiaDetalleDTO;
 import com.churninsight.backend.model.entity.Cliente;
 import com.churninsight.backend.repository.ClienteRepository;
+import com.churninsight.backend.util.strategys.EstrategiasChurn;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -227,11 +230,12 @@ public class ClienteService {
         // Extraer datos de la respuesta del ML
         Integer prediction = (Integer) mlResponse.get("prediction");
         Double probability = (Double) mlResponse.get("churn_probability");
-        String riskLevel = (String) mlResponse.get("risk_level");
 
-        // Generar estrategia de retención basada en el riesgo
-        String estrategia = generarEstrategiaRetencion(riskLevel, probability);
-        String recomendacion = generarRecomendacion(riskLevel, probability, cliente);
+        // Determinar nivel de riesgo basado en la probabilidad usando los nuevos umbrales
+        String riskLevel = EstrategiasChurn.determinarNivelRiesgo(probability);
+
+        // Generar estrategias de retención completas basadas en el nivel de riesgo
+        StrategysDTO estrategias = generarEstrategiasCompletas(riskLevel);
 
         // Construir y retornar el DTO completo con datos del cliente
         return new PrediccionChurnDTO(
@@ -242,46 +246,36 @@ public class ClienteService {
             prediction,
             probability,
             riskLevel,
-            estrategia,
-            recomendacion
+            estrategias
         );
     }
 
     /**
-     * Genera estrategia de retención según el nivel de riesgo
+     * Genera el objeto StrategysDTO completo con todas las estrategias según el nivel de riesgo
      */
-    private String generarEstrategiaRetencion(String riskLevel, Double probability) {
-        if ("Alto".equalsIgnoreCase(riskLevel) || probability > 0.7) {
-            return "URGENTE - Contacto inmediato";
-        } else if (probability > 0.5) {
-            return "MEDIO - Seguimiento prioritario";
-        } else {
-            return "BAJO - Mantenimiento estándar";
-        }
-    }
+    private StrategysDTO generarEstrategiasCompletas(String nivelRiesgo) {
+        // Obtener datos de la clase utilitaria
+        String rangoProbabilidad = EstrategiasChurn.obtenerRangoProbabilidad(nivelRiesgo);
+        String estrategiaPrincipal = EstrategiasChurn.obtenerEstrategiaPrincipal(nivelRiesgo);
 
-    /**
-     * Genera recomendaciones específicas según el perfil del cliente
-     */
-    private String generarRecomendacion(String riskLevel, Double probability, Cliente cliente) {
-        if ("Alto".equalsIgnoreCase(riskLevel)) {
-            // Clientes de alto riesgo
-            if ("Month-to-month".equals(cliente.getContract())) {
-                return "Ofrecer descuento en contrato anual. Cliente con contrato mensual tiene mayor probabilidad de cancelar.";
-            } else if ("Electronic check".equals(cliente.getPaymentMethod())) {
-                return "Incentivar cambio a método de pago automático con descuento del 5%.";
-            } else if ("Fiber optic".equals(cliente.getInternetService()) && cliente.getMonthlyCharges() > 70) {
-                return "Ofrecer plan personalizado con servicios adicionales sin costo por 3 meses.";
-            } else {
-                return "Contactar para encuesta de satisfacción y ofrecer beneficios exclusivos.";
-            }
-        } else if (probability > 0.3) {
-            // Clientes de riesgo medio
-            return "Enviar campaña de fidelización con beneficios por antigüedad.";
-        } else {
-            // Clientes de bajo riesgo
-            return "Mantener calidad de servicio y enviar comunicaciones periódicas de valor agregado.";
-        }
+        // Convertir las estrategias detalladas al DTO
+        List<EstrategiaDetalleDTO> estrategiasDetalladas = EstrategiasChurn
+            .obtenerEstrategiasDetalladas(nivelRiesgo)
+            .stream()
+            .map(e -> new EstrategiaDetalleDTO(
+                e.getNumero(),
+                e.getTitulo(),
+                e.getDescripcion(),
+                e.getDescuento()
+            ))
+            .collect(Collectors.toList());
+
+        return new StrategysDTO(
+            nivelRiesgo,
+            rangoProbabilidad,
+            estrategiaPrincipal,
+            estrategiasDetalladas
+        );
     }
 
     /**
