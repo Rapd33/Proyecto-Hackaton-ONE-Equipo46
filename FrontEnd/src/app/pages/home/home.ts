@@ -91,14 +91,14 @@ export class Home {
 
   // INTEGRANTES (Orden A-Z)
   teamMembers = [
-    { name: 'Bibiana Trujillo', role: 'Data Scientist', initials: 'BT', linkedin: '#' },
-    { name: 'Fernando Hernández R.', role: 'Data Scientist', initials: 'FH', linkedin: '#' },
-    { name: 'Giorgi Beltran Guzman', role: 'Backend Developer', initials: 'GB', linkedin: '#' },
-    { name: 'Henry Corporan', role: 'Backend Developer', initials: 'HC', linkedin: '#' },
-    { name: 'Juan Carlos Rueda R.', role: 'Backend & Frontend Dev', initials: 'JR', linkedin: '#' },
-    { name: 'Rafael Alejandro Mena', role: 'Data Engineer', initials: 'RM', linkedin: '#' },
-    { name: 'Rafael Patiño Diaz', role: 'Backend & Frontend Dev', initials: 'RP', linkedin: '#' },
-    { name: 'Richard Jerez', role: 'Data Scientist', initials: 'RJ', linkedin: '#' }
+    { name: 'Bibiana Trujillo', role: 'Data Scientist', initials: 'BT', linkedin: 'https://www.linkedin.com/in/bibiana-trujillo/', github: 'https://github.com/BibiTC' },
+    { name: 'Fernando Hernández Rivera', role: 'Data Scientist', initials: 'FH', linkedin: 'https://www.linkedin.com/in/fernando-hernandez-admon/', github: 'https://github.com/rivera2067' },
+    { name: 'Giorgi Beltrán Guzmán', role: 'Backend Developer', initials: 'GB', linkedin: 'https://www.linkedin.com/in/giorgi-b-1aa7341bb/', github: 'https://github.com/GioBelGuz' },
+    { name: 'Juan Carlos Rueda Ramos', role: 'Fullstack Developer', initials: 'JR', linkedin: 'https://www.linkedin.com/in/juanchokajcrr/', github: 'https://github.com/Juanchokajcrr' },
+    { name: 'Leandro Corporan', role: 'Backend Developer', initials: 'LC', linkedin: 'https://www.linkedin.com/in/henry-leandro-corporan-terrero-b57204357/', github: 'https://github.com/Henry2430' },
+    { name: 'Rafael Alejandro Mena Martínez', role: 'Data Engineer', initials: 'RM', linkedin: 'https://www.linkedin.com/in/rafael-alejandro-mena-martinez-764258119/', github: 'https://github.com/Rafa-Mena' },
+    { name: 'Rafael Patiño Díaz', role: 'Fullstack Dev & Data Scientist', initials: 'RP', linkedin: 'https://www.linkedin.com/in/rafael-patiño-diaz/', github: 'https://github.com/Rapd33' },
+    { name: 'Richard Jerez Padilla', role: 'Data Scientist', initials: 'RJ', linkedin: 'https://www.linkedin.com/in/richard-jerez-padilla/', github: 'https://github.com/Riq76' }
   ];
 
   /**

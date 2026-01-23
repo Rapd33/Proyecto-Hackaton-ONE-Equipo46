@@ -204,6 +204,8 @@ Documentación del microservicio de Machine Learning:
 - Arquitectura hexagonal
 - Swagger UI integrada
 
+📊 **[Informe Completo de Análisis](DataScience/Informe%20Final%20-%20ChurnInsight%20(Telco%20Customer%20Churn).md)** — Documentación detallada del proceso de Data Science: análisis exploratorio (EDA), comparativa de 7 modelos con distintas técnicas de balanceo, métricas de evaluación y estrategias de retención propuestas por rangos de probabilidad.
+
 ### 🔧 [BackEnd - API Spring Boot](BackEnd/README.md)
 
 Documentación de la API REST en Spring Boot:
@@ -420,13 +422,18 @@ Otros sistemas pueden:
 
 ## 👥 Equipo
 
-Este proyecto fue desarrollado por el **Equipo 46** del Hackaton ONE.
+Este proyecto fue desarrollado por el **Equipo 46** del Hackaton ONE / NoCountry.
 
-### Contribuidores
-
-- **Data Science**: Desarrollo del modelo de ML y API de predicción
-- **Backend**: Implementación de la API REST y persistencia
-- **Frontend**: Diseño e implementación del dashboard web
+| Nombre | Rol | LinkedIn | GitHub |
+|--------|-----|----------|--------|
+| Bibiana Trujillo | Data Scientist | [LinkedIn](https://www.linkedin.com/in/bibiana-trujillo/) | [GitHub](https://github.com/BibiTC) |
+| Fernando Hernández Rivera | Data Scientist | [LinkedIn](https://www.linkedin.com/in/fernando-hernandez-admon/) | [GitHub](https://github.com/rivera2067) |
+| Giorgi Beltrán Guzmán | Backend Developer | [LinkedIn](https://www.linkedin.com/in/giorgi-b-1aa7341bb/) | [GitHub](https://github.com/GioBelGuz) |
+| Juan Carlos Rueda Ramos | Fullstack Developer | [LinkedIn](https://www.linkedin.com/in/juanchokajcrr/) | [GitHub](https://github.com/Juanchokajcrr) |
+| Leandro Corporan | Backend Developer | [LinkedIn](https://www.linkedin.com/in/henry-leandro-corporan-terrero-b57204357/) | [GitHub](https://github.com/Henry2430) |
+| Rafael Alejandro Mena Martínez | Data Engineer | [LinkedIn](https://www.linkedin.com/in/rafael-alejandro-mena-martinez-764258119/) | [GitHub](https://github.com/Rafa-Mena) |
+| Rafael Patiño Díaz | Fullstack Developer & Data Scientist | [LinkedIn](https://www.linkedin.com/in/rafael-patiño-diaz/) | [GitHub](https://github.com/Rapd33) |
+| Richard Jerez Padilla | Data Scientist | [LinkedIn](https://www.linkedin.com/in/richard-jerez-padilla/) | [GitHub](https://github.com/Riq76) |
 
 ---
 
