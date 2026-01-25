@@ -14,6 +14,8 @@
 
 **ChurnInsight** es una plataforma completa de Machine Learning que predice la probabilidad de que un cliente cancele su servicio de telecomunicaciones. El sistema permite a las empresas actuar de manera proactiva antes de perder clientes, identificando patrones de riesgo y facilitando la toma de decisiones estratégicas.
 
+video explicativo: [Youtube](https://www.youtube.com/watch?v=g7kSx8hIrV0)
+
 ### El Desafío
 
 El equipo 46 del Hackaton ONE enfrenta el reto de crear una solución end-to-end que:
